@@ -8,13 +8,13 @@ import {
     View,
     Form, Image
 } from 'react-native';
-import { TextInput, Button, Title } from 'react-native-paper';
+import { TextInput, Button, Title, Snackbar } from 'react-native-paper';
 
 export default class LoginScreen extends React.Component {
 
     state = {
-      email: '',
-      password: '',
+        email: '',
+        password: '',
     };
 
     static navigationOptions = {
@@ -52,8 +52,9 @@ export default class LoginScreen extends React.Component {
                                 style={styles.textInput}
                             />
                             <TouchableOpacity
-                                style={styles.button}>
-                                <Button mode="contained" onPress={() => this.props.navigation.navigate('Main')}
+                                style={styles.button}
+                                onPress={() => {this.props.navigation.navigate('Main')}}>
+                                <Button mode="contained"
                                         style={styles.buttonLogin}>
                                     Login
                                 </Button>
