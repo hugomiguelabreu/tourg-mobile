@@ -1,4 +1,5 @@
-# tourg - Your instant guide
+# <img height='65' src="https://github.com/hugomiguelabreu/tourg-mobile-guide/blob/master/assets/images/tour-white.png"/>
+### tourg - Your instant guide
 
 tourg is a mobile application with the pretension of offering a seamless tourist experience to the end-user.
 
