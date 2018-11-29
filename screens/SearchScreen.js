@@ -3,6 +3,7 @@ import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react
 import {MonoText} from "../components/StyledText";
 import {Title} from "react-native-paper";
 import SearchHeader from "../components/SearchHeader";
+import ActivityCard from "../components/ActivityCard";
 
 export default class SearchScreen extends React.Component {
 
@@ -17,41 +18,32 @@ export default class SearchScreen extends React.Component {
       return (
           <View style={styles.container}>
               <ScrollView style={styles.container} contentContainerStyle={{flexGrow:1}}>
-                  <View style={styles.getStartedContainer}>
-                      <Text style={styles.getStartedText}>Get started by opening</Text>
-
-                      <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-                          <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
-                      </View>
-
-                      <Text style={styles.getStartedText}>
-                          Change this text and your app will automatically reload.
-                      </Text>
-                  </View>
-
-                  <View style={styles.helpContainer}>
-                      <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-                          <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-                      </TouchableOpacity>
+                  <View style={styles.list}>
+                      <ActivityCard/>
+                      <ActivityCard/>
+                      <ActivityCard/>
+                      <ActivityCard/>
+                      <ActivityCard/>
+                      <ActivityCard/>
+                      <ActivityCard/>
                   </View>
               </ScrollView>
-
-              <View style={styles.tabBarInfoContainer}>
-                  <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-                  <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-                      <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
-                  </View>
-              </View>
           </View>
       );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: '#fff',
-  },
+    container: {
+        flex: 1,
+        paddingTop: 15,
+        backgroundColor: '#fff',
+    },
+
+    list: {
+        paddingLeft: 15,
+        paddingRight: 15,
+        flex:1,
+        flexDirection: 'column',
+    },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import {Title, Searchbar} from "react-native-paper";
 import Colors from "../constants/Colors";
 import {Icon} from "expo";
@@ -12,17 +12,17 @@ export default class SearchHeader extends React.Component {
                     <Title>FIND ACTIVITIES</Title>
                 </View>
                 <View style={{flex:1, flexDirection: 'row'}}>
-                    <View style={{flex:4}}>
+                    <TouchableOpacity style={{flex:4}}>
                         <Searchbar
                             style={{border:0, elevation: 0}}
                             placeholder="Search a city..."
                         />
-                    </View>
+                    </TouchableOpacity>
                     <View style={{flex:2, flexDirection:'row', alignItems: 'center'}}>
                         <View style={{flex:0.5}}>
                             <Title>|</Title>
                         </View>
-                        <View style={{flex:2, flexDirection:'row', justifyContent:'space-around', alignItems:'stretch'}}>
+                        <TouchableOpacity style={{flex:2, flexDirection:'row', justifyContent:'space-around', alignItems:'stretch'}}>
                             <View style={{flex:2, flexDirection:'column', justifyContent: 'center'}}>
                                 <Text>Braga,</Text>
                                 <Text>Portugal</Text>
@@ -34,7 +34,7 @@ export default class SearchHeader extends React.Component {
                                     color={Colors.tabIconDefault}
                                 />
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
