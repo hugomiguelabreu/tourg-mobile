@@ -26,7 +26,7 @@ HomeStack.navigationOptions = {
 };
 
 const MapStack = createStackNavigator({
-  Links: SearchScreen,
+  Search: SearchScreen,
 });
 
 MapStack.navigationOptions = {

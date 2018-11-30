@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StatusBar, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {MonoText} from "../components/StyledText";
 import {Title} from "react-native-paper";
 import SearchHeader from "../components/SearchHeader";
