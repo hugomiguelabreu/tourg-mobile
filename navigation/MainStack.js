@@ -39,16 +39,30 @@ MapStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
+const SearchStack = createStackNavigator({
+    Search: SearchScreen,
+});
+
+SearchStack.navigationOptions = {
+    tabBarLabel: 'Search',
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
+        />
+    ),
+};
+
+const BookingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+BookingsStack.navigationOptions = {
+  tabBarLabel: 'Bookings',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-calendar' : 'md-calendar'}
     />
   ),
 };
@@ -70,6 +84,7 @@ AccountStack.navigationOptions = {
 export default createBottomTabNavigator({
     HomeStack,
     MapStack,
-    SettingsStack,
+    SearchStack,
+    BookingsStack,
     AccountStack,
 });
