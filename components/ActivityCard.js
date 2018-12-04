@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableNativeFeedback, Image } from 'react-native';
+import {View, Text, TouchableNativeFeedback, Image, StyleSheet} from 'react-native';
 import {Title, Card, Paragraph, Button, Divider} from "react-native-paper";
 import Colors from "../constants/Colors";
 import {Icon} from "expo";
@@ -8,7 +8,8 @@ export default class ActivityCard extends React.Component {
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column', paddingBottom: 30}}>
-                <TouchableNativeFeedback>
+                <TouchableNativeFeedback
+                    onPress={() => {this.props.navigation.navigate('Booking')}}>
                     <Card style={{flex:1}}>
                         <Card.Cover style={{height:130}} source={{ uri: 'https://picsum.photos/500/?random' }} />
                         <Card.Content style={{flex:1}}>

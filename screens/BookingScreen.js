@@ -1,24 +1,18 @@
 import React from 'react';
-import {
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableNativeFeedback,
-    View,
-    Button
-} from 'react-native';
+import {Platform, StatusBar, ScrollView, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
 import {MonoText} from "../components/StyledText";
 import {Title} from "react-native-paper";
-import SearchHeader from "../components/SearchHeader";
-import ActivityCard from "../components/ActivityCard";
+import { Icon } from 'expo';
 
-export default class SearchScreen extends React.Component {
+export default class BookingScreen extends React.Component {
 
   static navigationOptions = {
-      headerTitle: <SearchHeader />,
-      headerStyle: {
-          height:96,
+      title: 'BOOKING',
+      headerTitleStyle: {
+        flex: 1,
+        alignSelf: 'center',
+        textAlign: 'center',
+        justifyContent: 'center'
       },
   };
 
@@ -27,8 +21,7 @@ export default class SearchScreen extends React.Component {
           <View style={styles.container}>
               <ScrollView style={styles.container} contentContainerStyle={{flexGrow:1}}>
                   <View style={styles.list}>
-                        <ActivityCard navigation={this.props.navigation}/>
-                        <ActivityCard navigation={this.props.navigation}/>
+                      <Text></Text>
                   </View>
               </ScrollView>
           </View>

@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import BookingScreen from "../screens/BookingScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -41,6 +42,7 @@ MapStack.navigationOptions = {
 
 const SearchStack = createStackNavigator({
     Search: SearchScreen,
+    Booking: BookingScreen,
 });
 
 SearchStack.navigationOptions = {
