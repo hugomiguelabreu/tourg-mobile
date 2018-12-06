@@ -3,6 +3,7 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import { Constants } from 'expo';
 
 export default class App extends React.Component {
   state = {
@@ -31,10 +32,10 @@ export default class App extends React.Component {
     } else {
       return (
         <PaperProvider theme={theme}>
-            <StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+            <View style={styles.statusBar} />
             <View style={styles.container}>
-              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-              <AppNavigator />
+                {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+                <AppNavigator />
           </View>
         </PaperProvider>
       );
@@ -69,8 +70,15 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      marginTop: -(Constants.statusBarHeight), //Remove extra space of status bar
+    },
+
+    statusBar: {
+        elevation:1,
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        height: Constants.statusBarHeight,
+    },
 });
