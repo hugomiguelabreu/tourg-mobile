@@ -31,8 +31,8 @@ export default class App extends React.Component {
     } else {
       return (
         <PaperProvider theme={theme}>
-          <View style={styles.container}>
-              <StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+            <StatusBar translucent={true} backgroundColor={'rgba(0, 0, 0, 0.4)'} />
+            <View style={styles.container}>
               {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
               <AppNavigator />
           </View>

@@ -38,16 +38,16 @@ export default class BookingScreen extends React.Component {
                       </View>
                       <Divider/>
                       <View style={{flex:1, flexDirection: 'column'}}>
-                          <BookOption/>
-                          <BookOption/>
-                          <BookOption/>
-                          <BookOption/>
+                          <BookOption startHour='9AM' endHour='11AM' minimum='2'/>
+                          <BookOption startHour='13AM' endHour='15AM' minimum='4'/>
+                          <BookOption startHour='16AM' endHour='18AM' minimum='2'/>
+                          <BookOption startHour='19AM' endHour='20AM' minimum='2'/>
                       </View>
                   </View>
               </ScrollView>
               <View style={styles.tabBarInfoContainer}>
                   <View style={{flex:1, flexDirection:'row', justifyContent: 'space-around'}}>
-                      <View style={{flex:0.75, flexDirection:'column', justifyContent:'center'}}>
+                      <View style={{flex:0.8, flexDirection:'column', justifyContent:'center'}}>
                         <Text style={styles.tabBarInfoText}>Need more options? Chat with the guide</Text>
                       </View>
                       <View>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         paddingVertical: 7.5,
     },
     tabBarInfoText: {
-        fontSize: 16,
+        fontSize: 14,
         color: 'black',
     },
 });
