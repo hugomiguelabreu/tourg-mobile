@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StatusBar, ScrollView, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
+import {Platform, Dimensions, ScrollView, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
 import {MonoText} from "../components/StyledText";
 import {Button, Title, FAB, Divider} from "react-native-paper";
 import {CalendarList} from 'react-native-calendars';
@@ -29,6 +29,7 @@ export default class BookingScreen extends React.Component {
               <ScrollView style={styles.container} contentContainerStyle={{flexGrow:1}}>
                   <View style={styles.list}>
                       <View style={{backgroundColor:'#F1F0F4', paddingBottom: 5, paddingTop: 10}}>
+                          <View style={{position: 'absolute', backgroundColor:'grey', padding:25, width:Dimensions.get('window').width}}></View>
                           <CalendarPicker
                               selectedDayColor="white"
                               selectedDayTextColor="black"
