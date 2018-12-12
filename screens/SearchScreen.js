@@ -4,9 +4,9 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TouchableNativeFeedback,
+    ActivityIndicator,
     View,
-    Button
+    Modal
 } from 'react-native';
 import {MonoText} from "../components/StyledText";
 import {Title} from "react-native-paper";
@@ -15,20 +15,20 @@ import ActivityCard from "../components/ActivityCard";
 
 export default class SearchScreen extends React.Component {
 
-  static navigationOptions = {
-      headerTitle: <SearchHeader />,
-      headerStyle: {
-          height:96,
-      },
-  };
+    static navigationOptions = {
+        headerTitle: <SearchHeader />,
+        headerStyle: {
+              height:96,
+          },
+    };
 
   render() {
       return (
           <View style={styles.container}>
               <ScrollView style={styles.container} contentContainerStyle={{flexGrow:1}}>
                   <View style={styles.list}>
-                        <ActivityCard navigation={this.props.navigation}/>
-                        <ActivityCard navigation={this.props.navigation}/>
+                      <ActivityCard navigation={this.props.navigation}/>
+                      <ActivityCard navigation={this.props.navigation}/>
                   </View>
               </ScrollView>
           </View>

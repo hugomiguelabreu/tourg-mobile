@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableNativeFeedback, Image, StyleSheet} from 'react-native';
+import {View, Text, TouchableNativeFeedback, Image, StyleSheet, ActivityIndicator, Modal} from 'react-native';
 import {Title, Card, Paragraph, Button, Divider} from "react-native-paper";
 import Colors from "../constants/Colors";
 import {Icon} from "expo";

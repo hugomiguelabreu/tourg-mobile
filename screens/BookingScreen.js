@@ -1,18 +1,25 @@
 import React from 'react';
-import {Platform, Dimensions, ScrollView, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native';
+import {
+    Platform,
+    Dimensions,
+    ScrollView,
+    StyleSheet,
+    Text,
+    InteractionManager,
+    View,
+    ActivityIndicator, Modal
+} from 'react-native';
 import {MonoText} from "../components/StyledText";
 import {Button, Title, FAB, Divider} from "react-native-paper";
 import {CalendarList} from 'react-native-calendars';
-import CalendarPicker
-
-    from "react-native-calendar-picker";
+import CalendarPicker from "react-native-calendar-picker";
 import BookOption from "../components/BookOption";
 
 export default class BookingScreen extends React.Component {
 
-  moment = require('moment');
-  selectedDate = this.moment().format('YYYY-MM-DD');
-  static navigationOptions = {
+    moment = require('moment');
+    selectedDate = this.moment().format('YYYY-MM-DD');
+    static navigationOptions = {
       title: 'BOOKING',
       headerTitleStyle: {
         flex: 1,
@@ -21,7 +28,7 @@ export default class BookingScreen extends React.Component {
         justifyContent: 'center'
       },
       headerRight:<View></View>, // To center title.
-  };
+    };
 
   render() {
       return (
@@ -31,11 +38,13 @@ export default class BookingScreen extends React.Component {
                       <View style={{backgroundColor:'#F1F0F4', paddingBottom: 5, paddingTop: 10}}>
                           <View style={{position: 'absolute', backgroundColor:'grey', padding:25, width:Dimensions.get('window').width}}></View>
                           <CalendarPicker
-                              selectedDayColor="white"
-                              selectedDayTextColor="black"
-                              swipeConfig={{velocityThreshold: 0.1,
-                                  directionalOffsetThreshold: 150}}
-                              minDate={new Date()}/>
+                          selectedDayColor="white"
+                          selectedDayTextColor="black"
+                          swipeConfig={{
+                              velocityThreshold: 0.1,
+                              directionalOffsetThreshold: 150
+                          }}
+                          minDate={new Date()}/>
                       </View>
                       <Divider/>
                       <View style={{flex:1, flexDirection: 'column'}}>
