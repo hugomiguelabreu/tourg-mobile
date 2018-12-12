@@ -15,15 +15,11 @@ export default class ChatScreen extends React.Component {
     };
 
 
-    render() {
+/*    render() {
         return (
-            <GiftedChat
-                messages={this.state.messages}
-                onSend={messages => this.onSend(messages)}
-                user={{
-                    _id: CHATKIT_USER_NAME
-                }}
-            />
+
+
         );
     }
+    */
 }
