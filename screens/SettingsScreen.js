@@ -4,10 +4,10 @@ import {Button, TouchableRipple, Title} from "react-native-paper";
 import {TouchableOpacity, View} from "react-native";
 
 export default class SettingsScreen extends React.Component {
-  static navigationOptions = {
-      headerTitle: <View style={{flex:1, flexDirection: 'column'}}>
-          <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>PROFILE</Title></View></View>,
-  };
+
+    static navigationOptions = {
+        header: null,
+    };
 
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your

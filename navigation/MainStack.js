@@ -1,13 +1,13 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-import {BottomNavigation} from 'react-native-paper';
-
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import BookingScreen from "../screens/BookingScreen";
+import AccountScreen from "../screens/AccountScreen";
+import SearchHeader from "../components/SearchHeader";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -71,7 +71,7 @@ BookingsStack.navigationOptions = {
 };
 
 const AccountStack = createStackNavigator({
-    Account: SettingsScreen,
+    Account: AccountScreen,
 });
 
 AccountStack.navigationOptions = {
