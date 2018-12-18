@@ -1,7 +1,7 @@
 import React from 'react';
 import {Platform, StatusBar, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { GiftedChat } from "react-native-gifted-chat";
-import Chatkit from "@pusher/chatkit";
+import Chatkit from "@pusher/chatkit-client";
 import {MonoText} from "../components/StyledText";
 import {Title} from "react-native-paper";
 import SearchHeader from "../components/SearchHeader";
@@ -9,7 +9,7 @@ import ActivityCard from "../components/ActivityCard";
 
 const CHATKIT_TOKEN_PROVIDER_ENDPOINT = "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/852f5dbf-eb6e-4513-954a-b198bbd36630/token\n";
 const CHATKIT_INSTANCE_LOCATOR = "v1:us1:852f5dbf-eb6e-4513-954a-b198bbd36630";
-const CHATKIT_ROOM_ID = 19375803;
+const CHATKIT_ROOM_ID = "19375803";
 const CHATKIT_USER_NAME = "111"; // Let's chat as "Dave" for this tutorial
 
 export default class ChatScreen extends React.Component {
