@@ -55,7 +55,7 @@ SearchStack.navigationOptions = {
 };
 
 const BookingsStack = createStackNavigator({
-  Chat: ChatScreen,
+  Settings: ChatScreen,
 });
 
 BookingsStack.navigationOptions = {
