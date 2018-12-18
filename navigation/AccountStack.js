@@ -3,6 +3,7 @@ import SettingsScreen from "../screens/SettingsScreen";
 import React from "react";
 import MyBookings from "../screens/AccountScreens/MyBookings";
 import Profile from "../screens/AccountScreens/Profile";
+import MyPayments from "../screens/AccountScreens/MyPayments";
 
 const MyBookingsStack = createStackNavigator({
     MyBookings: MyBookings,
@@ -21,7 +22,7 @@ ProfileStack.navigationOptions = {
 };
 
 const PaymentsStack = createStackNavigator({
-    Account: SettingsScreen,
+    Payments: MyPayments,
 });
 
 PaymentsStack.navigationOptions = {

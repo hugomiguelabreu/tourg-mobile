@@ -30,7 +30,8 @@ export default class SearchHeader extends React.Component {
                         <Button mode='text'>
                             <Icon.Ionicons
                                 name='ios-log-out'
-                                size={30}
+                                size={28}
+                                style={{ margin:2 }}
                             />
                         </Button>
                     </TouchableRipple>
