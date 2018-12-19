@@ -5,6 +5,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ChatScreen from '../screens/ChatScreen';
 import BookingScreen from "../screens/BookingScreen";
 import AccountScreen from "../screens/AccountScreen";
 import SearchHeader from "../components/SearchHeader";
@@ -57,7 +58,7 @@ SearchStack.navigationOptions = {
 };
 
 const BookingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+  Settings: ChatScreen,
 });
 
 BookingsStack.navigationOptions = {
