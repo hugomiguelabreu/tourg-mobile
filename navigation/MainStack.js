@@ -1,12 +1,14 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ChatScreen from '../screens/ChatScreen';
+import BookingScreen from "../screens/BookingScreen";
+import AccountScreen from "../screens/AccountScreen";
+import SearchHeader from "../components/SearchHeader";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -42,6 +44,7 @@ MapStack.navigationOptions = {
 
 const SearchStack = createStackNavigator({
     Search: SearchScreen,
+    Booking: BookingScreen,
 });
 
 SearchStack.navigationOptions = {
@@ -69,7 +72,7 @@ BookingsStack.navigationOptions = {
 };
 
 const AccountStack = createStackNavigator({
-    Account: SettingsScreen,
+    Account: AccountScreen,
 });
 
 AccountStack.navigationOptions = {
