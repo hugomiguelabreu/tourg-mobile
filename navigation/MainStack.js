@@ -45,6 +45,7 @@ MapStack.navigationOptions = {
 const SearchStack = createStackNavigator({
     Search: SearchScreen,
     Booking: BookingScreen,
+    Chat: ChatScreen,
 });
 
 SearchStack.navigationOptions = {
@@ -58,7 +59,7 @@ SearchStack.navigationOptions = {
 };
 
 const BookingsStack = createStackNavigator({
-  Settings: ChatScreen,
+  Settings: SettingsScreen,
 });
 
 BookingsStack.navigationOptions = {

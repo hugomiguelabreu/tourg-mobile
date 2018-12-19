@@ -64,7 +64,7 @@ export default class BookingScreen extends React.Component {
                           <FAB
                               small
                               icon="chat"
-                              onPress={() => console.log('Pressed')}
+                              onPress={() => this.props.navigation.navigate('Chat')}
                           />
                       </View>
                   </View>
