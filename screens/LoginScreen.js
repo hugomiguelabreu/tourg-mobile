@@ -6,20 +6,45 @@ import {
     Text,
     TouchableOpacity,
     View,
-    Form, Image
+    Form, Image,
+    Modal,
+    AsyncStorage
 } from 'react-native';
-import { TextInput, Button, Title, Snackbar } from 'react-native-paper';
+import { TextInput, Button, Title, HelperText } from 'react-native-paper';
+import axios from 'axios';
+import {Icon} from 'expo';
 
 export default class LoginScreen extends React.Component {
 
     state = {
         email: '',
         password: '',
+        errorMessage:'',
     };
 
     static navigationOptions = {
         title: 'Profile',
     };
+
+    _login(email, password){
+        let me = this;
+
+        if(email == '' || password == '') {
+            me.setState({errorMessage: 'Please fill the required fields'});
+            return;
+        }
+
+        axios.post('/user/login',
+            {email:email, password: password})
+            .then((resp) => {
+                console.log(resp.data);
+                me.props.navigation.navigate('Main');
+            })
+            .catch((err) => {
+                me.setState({ errorMessage: 'Invalid credentials provided' });
+                console.log(err);
+            });
+    }
 
     render() {
         return (
@@ -53,12 +78,20 @@ export default class LoginScreen extends React.Component {
                             />
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => {this.props.navigation.navigate('Main')}}>
+                                onPress={() => {this._login(this.state.email, this.state.password)}}>
                                 <Button mode="contained"
                                         style={styles.buttonLogin}>
                                     Login
                                 </Button>
                             </TouchableOpacity>
+                            <View style={{paddingTop:10, flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                                <HelperText
+                                    type="error"
+                                    visible={!(this.state.errorMessage=='')}
+                                    style={{fontSize:14}}>
+                                    <Icon.Ionicons name="md-alert" size={14}/> {this.state.errorMessage}
+                                </HelperText>
+                            </View>
                         </View>
                     </View>
                 </ScrollView>

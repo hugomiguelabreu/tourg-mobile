@@ -13,42 +13,54 @@ import {TextInput, Button, Title, Snackbar, Divider} from 'react-native-paper';
 
 export default class Profile extends React.Component {
 
-    state = {
-        firstName: 'Hugo',
-        lastName: 'Carl',
-        email: 'hugo@hugo.com',
-        password: 'kappa123',
-        phone: '+35191712361'
-    };
+    constructor(props){
+        super(props);
+        this.state = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            phone: ''
+        };
+    }
+
 
     static navigationOptions = {
         header: null,
     };
 
     componentWillMount() {
-        try {
-            const value = AsyncStorage.getItem('USER');
-            if (value !== null) {
-                // We have data!!
-                this.setState({firstName:user.firstName});
-            }
-        } catch (error) {
-            // Error retrieving data
-        }
+        AsyncStorage.getItem('USER')
+            .then((user) => {
+                if(user!=null) {
+                    user = JSON.parse(user);
+                    this.setState({firstName: user.firstName});
+                    this.setState({lastName: user.lastName});
+                    this.setState({email: user.email});
+                    this.setState({password: user.password});
+                    this.setState({phone: user.phone});
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
-    _saveProfile(){
-        try {
-            AsyncStorage.setItem('USER', {
-                firstName:this.state.firstName,
-                lastName: this.state.lastName,
-                email: this.state.email,
-                password: this.state.password,
-                phone: this.state.phone
+    _saveProfile(state){
+        AsyncStorage.setItem('USER', JSON.stringify({
+                firstName: state.firstName,
+                lastName: state.lastName,
+                email: state.email,
+                password: state.password,
+                phone: state.phone,
+            }))
+            .then((resp) => {
+            console.log(resp);
+            })
+            .catch((err) => {
+                console.log(err);
             });
-        } catch (error) {
-            // Error saving data
-        }
+        console.log('ole');
     }
 
     render() {
@@ -106,7 +118,7 @@ export default class Profile extends React.Component {
                                 />
                                 <TouchableOpacity
                                     style={styles.button}
-                                    onPress={this._saveProfile()}>
+                                    onPress={() => {this._saveProfile(this.state)}}>
                                     <Button mode="contained"
                                             style={styles.buttonLogin}>
                                         Login

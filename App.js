@@ -4,6 +4,7 @@ import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { Constants } from 'expo';
+import axios from 'axios';
 
 export default class App extends React.Component {
   state = {
@@ -42,6 +43,12 @@ export default class App extends React.Component {
     }
   }
 
+  _configAxios = () => {
+      axios.defaults.baseURL = 'http://35.246.25.164/api/';
+      axios.defaults.headers.common['Authorization'] = '';
+      axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+  }
+
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
@@ -55,7 +62,8 @@ export default class App extends React.Component {
         // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
-    ]);
+      this._configAxios(),
+    ])
   };
 
   _handleLoadingError = error => {
