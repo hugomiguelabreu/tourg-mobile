@@ -44,7 +44,7 @@ export default class ChatScreen extends React.Component {
             this.currentUser.subscribeToRoom({
                 roomId: CHATKIT_ROOM_ID,
                 hooks: {
-                    onNewMessage: this.onReceive.bind(this)
+                    onMessage: this.onReceive.bind(this)
                 }
             });
         });
