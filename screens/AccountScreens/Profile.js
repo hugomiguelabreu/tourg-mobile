@@ -10,17 +10,17 @@ import {
     Form, Image, TouchableNativeFeedback
 } from 'react-native';
 import {TextInput, Button, Title, Snackbar, Divider} from 'react-native-paper';
+import userStore from '../../stores/UserStore';
 
 export default class Profile extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            phone: ''
+            email: userStore.email,
+            password: userStore.password,
+            phone: userStore.phone,
+            name: userStore.name
         };
     }
 
@@ -30,37 +30,12 @@ export default class Profile extends React.Component {
     };
 
     componentWillMount() {
-        AsyncStorage.getItem('USER')
-            .then((user) => {
-                if(user!=null) {
-                    user = JSON.parse(user);
-                    this.setState({firstName: user.firstName});
-                    this.setState({lastName: user.lastName});
-                    this.setState({email: user.email});
-                    this.setState({password: user.password});
-                    this.setState({phone: user.phone});
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+
     }
 
     _saveProfile(state){
-        AsyncStorage.setItem('USER', JSON.stringify({
-                firstName: state.firstName,
-                lastName: state.lastName,
-                email: state.email,
-                password: state.password,
-                phone: state.phone,
-            }))
-            .then((resp) => {
-            console.log(resp);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        console.log('ole');
+        console.log(userStore);
+        return;
     }
 
     render() {
@@ -86,15 +61,9 @@ export default class Profile extends React.Component {
                             </View>
                             <View style={{flex:4, flexDirection:'column'}}>
                                 <TextInput
-                                    label='First name'
-                                    value={this.state.firstName}
-                                    onChangeText={firstName => this.setState({ firstName: firstName })}
-                                    style={styles.textInput}
-                                />
-                                <TextInput
-                                    label='Last name'
-                                    value={this.state.lastName}
-                                    onChangeText={lastName => this.setState({ lastName: lastName })}
+                                    label='Name'
+                                    value={this.state.name}
+                                    onChangeText={name => this.setState({name: name})}
                                     style={styles.textInput}
                                 />
                                 <TextInput

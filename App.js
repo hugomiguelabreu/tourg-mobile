@@ -5,10 +5,12 @@ import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { Constants } from 'expo';
 import axios from 'axios';
+import userStore from "./stores/UserStore";
 
 export default class App extends React.Component {
   state = {
-    isLoadingComplete: false,
+      isLoadingComplete: false,
+      account:null,
   };
 
   render() {
@@ -36,7 +38,7 @@ export default class App extends React.Component {
             <View style={styles.statusBar} />
             <View style={styles.container}>
                 {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-                <AppNavigator />
+                <AppNavigator store = {userStore}/>
             </View>
         </PaperProvider>
       );
@@ -44,7 +46,7 @@ export default class App extends React.Component {
   }
 
   _configAxios = () => {
-      axios.defaults.baseURL = 'http://35.246.25.164/api/';
+      axios.defaults.baseURL = 'http://188.166.173.44/api/';
       axios.defaults.headers.common['Authorization'] = '';
       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
   }

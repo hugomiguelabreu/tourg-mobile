@@ -13,12 +13,13 @@ import {
 import { TextInput, Button, Title, HelperText } from 'react-native-paper';
 import axios from 'axios';
 import {Icon} from 'expo';
+import userStore from '../stores/UserStore';
 
 export default class LoginScreen extends React.Component {
 
     state = {
-        email: '',
-        password: '',
+        email: 'user@gmail.com',
+        password: 'password',
         errorMessage:'',
     };
 
@@ -28,7 +29,6 @@ export default class LoginScreen extends React.Component {
 
     _login(email, password){
         let me = this;
-
         if(email == '' || password == '') {
             me.setState({errorMessage: 'Please fill the required fields'});
             return;
@@ -37,13 +37,15 @@ export default class LoginScreen extends React.Component {
         axios.post('/user/login',
             {email:email, password: password})
             .then((resp) => {
-                console.log(resp.data);
+                //Put user in store
+                userStore.login(resp.data);
+                // Navigate to dashboard;
                 me.props.navigation.navigate('Main');
             })
             .catch((err) => {
                 me.setState({ errorMessage: 'Invalid credentials provided' });
                 console.log(err);
-            });
+        });
     }
 
     render() {

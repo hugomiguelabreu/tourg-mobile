@@ -3,8 +3,10 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {Title, Searchbar, Button, TouchableRipple} from "react-native-paper";
 import Colors from "../constants/Colors";
 import {Icon} from "expo";
+import userStore from '../stores/UserStore';
+import {observer} from "mobx-react/native";
 
-export default class SearchHeader extends React.Component {
+export default observer(class SearchHeader extends React.Component {
     render() {
         return (
             <View style={{flex:1, flexDirection:'row', alignItems: 'center', justifyContent:'space-around'}}>
@@ -12,7 +14,7 @@ export default class SearchHeader extends React.Component {
                     <Image style={{width:54, height:54}} source={{uri: 'https://media.istockphoto.com/photos/confident-businessman-posing-in-the-office-picture-id891418990?k=6&m=891418990&s=612x612&w=0&h=BItvQKG0Wf4Ht3XHPxa2LV0WkCtNjhBjkQv28Dhq2pA='}} />
                 </View>
                 <View style={{flex:0.4, flexDirection:'column', justifyContent: 'flex-start', alignItems:'flex-start'}}>
-                    <Text style={{fontWeight: '900'}}>Jonh Doe</Text>
+                    <Text style={{fontWeight: '900'}}>{userStore.name}</Text>
                     <Text style={{fontSize: 11, color:'grey'}}>Joined August, 2018</Text>
                 </View>
                 <View style={{flex:0.4, flexDirection:'row', justifyContent:'flex-start'}}>
@@ -26,7 +28,7 @@ export default class SearchHeader extends React.Component {
                 </View>
                 <View style={{flex:0.2, flexDirection:'row', justifyContent:'flex-start'}}>
                     <TouchableRipple
-                        onPress={() => {this.props.navigation.navigate('Auth')}}>
+                        onPress={() => {userStore.logout();this.props.navigation.navigate('Auth');}}>
                         <Button mode='text'>
                             <Icon.Ionicons
                                 name='ios-log-out'
@@ -39,4 +41,4 @@ export default class SearchHeader extends React.Component {
             </View>
         );
     }
-}
+})
