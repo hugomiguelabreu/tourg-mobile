@@ -6,7 +6,7 @@ import {Icon} from "expo";
 import userStore from '../stores/UserStore';
 import {observer} from "mobx-react/native";
 
-export default observer(class SearchHeader extends React.Component {
+@observer export default class SearchHeader extends React.Component {
     render() {
         return (
             <View style={{flex:1, flexDirection:'row', alignItems: 'center', justifyContent:'space-around'}}>
@@ -41,4 +41,4 @@ export default observer(class SearchHeader extends React.Component {
             </View>
         );
     }
-})
+}

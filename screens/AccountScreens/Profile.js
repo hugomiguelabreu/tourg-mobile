@@ -11,8 +11,9 @@ import {
 } from 'react-native';
 import {TextInput, Button, Title, Snackbar, Divider} from 'react-native-paper';
 import userStore from '../../stores/UserStore';
+import {observer} from "mobx-react/native";
 
-export default class Profile extends React.Component {
+@observer export default class Profile extends React.Component {
 
     constructor(props){
         super(props);
