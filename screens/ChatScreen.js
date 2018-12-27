@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StatusBar, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StatusBar, KeyboardAvoidingView, StyleSheet, Text, ActivityIndicator, View} from 'react-native';
 import { GiftedChat } from "react-native-gifted-chat";
 import Chatkit from "@pusher/chatkit-client";
 import {MonoText} from "../components/StyledText";
@@ -77,7 +77,8 @@ export default class ChatScreen extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <GiftedChat
-                    isAnimated={false}
+                    renderLoading={() =>  <ActivityIndicator size="large" color="#0000ff" style={{position: "absolute"}} />}
+                    isAnimated
                     keyboardShouldPersistTaps="never"
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}

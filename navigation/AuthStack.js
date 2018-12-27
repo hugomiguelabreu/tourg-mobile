@@ -76,5 +76,5 @@ export default createBottomTabNavigator(
         AccountStack,
     },
     {
-        initialRouteName: 'AccountStack'
+        initialRouteName: 'HomeStack'
     });

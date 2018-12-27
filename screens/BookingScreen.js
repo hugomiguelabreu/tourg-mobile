@@ -30,7 +30,7 @@ export default class BookingScreen extends React.Component {
       headerRight:<View></View>, // To center title.
     };
 
-  render() {
+    render() {
       return (
           <View style={styles.container}>
               <ScrollView style={styles.container} contentContainerStyle={{flexGrow:1}}>
@@ -71,7 +71,7 @@ export default class BookingScreen extends React.Component {
               </View>
           </View>
       );
-  }
+}
 }
 
 const styles = StyleSheet.create({

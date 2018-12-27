@@ -5,6 +5,11 @@ import Colors from "../constants/Colors";
 import {Icon} from "expo";
 
 export default class SearchHeader extends React.Component {
+
+    constructor(props){
+        super(props);
+    }
+
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column'}}>
@@ -22,7 +27,8 @@ export default class SearchHeader extends React.Component {
                         <View style={{flex:0.5}}>
                             <Title>|</Title>
                         </View>
-                        <TouchableOpacity style={{flex:2, flexDirection:'row', justifyContent:'space-around', alignItems:'stretch'}}>
+                        <TouchableOpacity style={{flex:2, flexDirection:'row', justifyContent:'space-around', alignItems:'stretch'}}
+                            onPress={this.props.onClick}>
                             <View style={{flex:2, flexDirection:'column', justifyContent: 'center'}}>
                                 <Text>Braga,</Text>
                                 <Text>Portugal</Text>
