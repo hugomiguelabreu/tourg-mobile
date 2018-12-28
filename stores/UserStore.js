@@ -1,6 +1,7 @@
 import {decorate, observable, action, configure} from "mobx"
 import { create, persist } from 'mobx-persist'
 import { AsyncStorage } from "react-native";
+import axios from "axios";
 
 class User {
     @persist @observable token = null;
@@ -21,6 +22,12 @@ class User {
         this.phone = data.user.phone;
         this.bio = data.user.bio;
         this.photo_path = data.user.photo_path;
+    }
+
+    @action updateUser(data){
+        this.name = data.name;
+        this.phone = data.phone;
+        this.bio = data.bio;
     }
 
     @action changeName(){
@@ -51,7 +58,11 @@ const hydrate = create({
 });
 
 hydrate('user', userStore)
-    .then(() => console.log('Success'))
+    .then(() => {
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + userStore.token;
+        console.log(userStore.token);
+        console.log('Success')
+    })
     .catch(() => console.log('Couldn\'t hydrate'));
 
 export default userStore;
