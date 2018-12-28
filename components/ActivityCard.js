@@ -9,13 +9,12 @@ export default class ActivityCard extends React.Component {
         return (
             <View style={{flex:1, flexDirection: 'column', paddingBottom: 30}}>
                 <TouchableNativeFeedback
-                    onPress={() => {this.props.navigation.navigate('Booking')}}>
+                    onPress={() => {this.props.navigation.navigate('Booking', {activityId: this.props.id})}}>
                     <Card style={{flex:1}}>
                         <Card.Cover style={{height:130}} source={{ uri: 'https://picsum.photos/500/?random' }} />
                         <Card.Content style={{flex:1}}>
-                            <Title>Experiência gastronómica</Title>
-                            <Paragraph numberOfLines={2}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                In tempus vitae enim sed euismod.</Paragraph>
+                            <Title>{this.props.title}</Title>
+                            <Paragraph numberOfLines={2}>{this.props.description}</Paragraph>
                         </Card.Content>
                         <Divider style={{marginTop: 10, marginBottom: 2}} />
                         <Card.Actions>
@@ -24,7 +23,7 @@ export default class ActivityCard extends React.Component {
                                     <Image style={{width:32, height:32}} source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBDSnWBOqgvr4hOdTTAhcaNU3KAaWQNn8UHqafmbHY_y39ysZ1'}} />
                                 </View>
                                 <View style={{flex:1, flexDirection:'column'}}>
-                                    <Text style={{fontWeight: '900'}}>John Doe</Text>
+                                    <Text style={{fontWeight: '900'}}>{this.props.guideName}</Text>
                                     <Text style={{fontSize: 11, color:'grey'}}>Joined Aug. 2018</Text>
                                 </View>
                                 <View style={{flex:1, flexDirection:'column', paddingLeft: 10}}>

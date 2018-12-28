@@ -17,6 +17,17 @@ import BookOption from "../components/BookOption";
 
 export default class BookingScreen extends React.Component {
 
+    constructor(props){
+        super(props);
+        this.state={
+            activityId: this.props.navigation.getParam('activityId', '0')
+        }
+    }
+
+    componentDidMount() {
+        //Fetch hours for activity id
+    }
+
     moment = require('moment');
     selectedDate = this.moment().format('YYYY-MM-DD');
     static navigationOptions = {
