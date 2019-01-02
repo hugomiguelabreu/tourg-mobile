@@ -30,10 +30,6 @@ class User {
         this.bio = data.bio;
     }
 
-    @action changeName(){
-        this.name = "kek";
-    }
-
     @action logout(){
         this.token = null;
         this.id = null;

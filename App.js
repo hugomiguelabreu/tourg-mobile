@@ -10,7 +10,6 @@ import userStore from "./stores/UserStore";
 export default class App extends React.Component {
   state = {
       isLoadingComplete: false,
-      account:null,
   };
 
   render() {

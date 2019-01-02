@@ -9,7 +9,6 @@ import {
     Form, Image, TouchableNativeFeedback
 } from 'react-native';
 import {List, Colors, Title, Snackbar, Divider} from 'react-native-paper';
-import PaymentMethod from "../../components/Account/PaymentMethod";
 import {Icon} from 'expo';
 
 export default class MyPayments extends React.Component {
