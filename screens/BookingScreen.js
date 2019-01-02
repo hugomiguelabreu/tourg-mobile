@@ -14,18 +14,21 @@ import {Button, Title, FAB, Divider} from "react-native-paper";
 import {CalendarList} from 'react-native-calendars';
 import CalendarPicker from "react-native-calendar-picker";
 import BookOption from "../components/BookOption";
+import LoadingModal from "../components/LoadingModal";
 
 export default class BookingScreen extends React.Component {
 
     constructor(props){
         super(props);
         this.state={
-            activityId: this.props.navigation.getParam('activityId', '0')
+            activityId: this.props.navigation.getParam('activityId', '0'),
+            isLoading: true
         }
     }
 
     componentDidMount() {
         //Fetch hours for activity id
+        this.setState({isLoading: false})
     }
 
     moment = require('moment');
@@ -42,47 +45,56 @@ export default class BookingScreen extends React.Component {
     };
 
     render() {
-      return (
-          <View style={styles.container}>
-              <ScrollView style={styles.container} contentContainerStyle={{flexGrow:1}}>
-                  <View style={styles.list}>
-                      <View style={{backgroundColor:'#F1F0F4', paddingBottom: 5, paddingTop: 10}}>
-                          <View style={{position: 'absolute', backgroundColor:'grey', padding:25, width:Dimensions.get('window').width}}></View>
-                          <CalendarPicker
-                          selectedDayColor="white"
-                          selectedDayTextColor="black"
-                          swipeConfig={{
-                              velocityThreshold: 0.1,
-                              directionalOffsetThreshold: 150
-                          }}
-                          minDate={new Date()}/>
-                      </View>
-                      <Divider/>
-                      <View style={{flex:1, flexDirection: 'column'}}>
-                          <BookOption startHour='9AM' endHour='11AM' minimum='2'/>
-                          <BookOption startHour='13AM' endHour='15AM' minimum='4'/>
-                          <BookOption startHour='16AM' endHour='18AM' minimum='2'/>
-                          <BookOption startHour='19AM' endHour='20AM' minimum='2'/>
-                      </View>
-                  </View>
-              </ScrollView>
-              <View style={styles.tabBarInfoContainer}>
-                  <View style={{flex:1, flexDirection:'row', justifyContent: 'space-around'}}>
-                      <View style={{flex:0.8, flexDirection:'column', justifyContent:'center'}}>
-                        <Text style={styles.tabBarInfoText}>Need more options? Chat with the guide</Text>
-                      </View>
-                      <View>
-                          <FAB
-                              small
-                              icon="chat"
-                              onPress={() => this.props.navigation.navigate('Chat')}
-                          />
-                      </View>
-                  </View>
-              </View>
-          </View>
-      );
-}
+        if(!this.state.isLoading) {
+            return (
+                <View style={styles.container}>
+                    <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1}}>
+                        <View style={styles.list}>
+                            <View style={{backgroundColor: '#F1F0F4', paddingBottom: 5, paddingTop: 10}}>
+                                <View style={{
+                                    position: 'absolute',
+                                    backgroundColor: 'grey',
+                                    padding: 25,
+                                    width: Dimensions.get('window').width
+                                }}></View>
+                                <CalendarPicker
+                                    selectedDayColor="white"
+                                    selectedDayTextColor="black"
+                                    swipeConfig={{
+                                        velocityThreshold: 0.1,
+                                        directionalOffsetThreshold: 150
+                                    }}
+                                    minDate={new Date()}/>
+                            </View>
+                            <Divider/>
+                            <View style={{flex: 1, flexDirection: 'column'}}>
+                                <BookOption startHour='9AM' endHour='11AM' minimum='2'/>
+                                <BookOption startHour='13AM' endHour='15AM' minimum='4'/>
+                                <BookOption startHour='16AM' endHour='18AM' minimum='2'/>
+                                <BookOption startHour='19AM' endHour='20AM' minimum='2'/>
+                            </View>
+                        </View>
+                    </ScrollView>
+                    <View style={styles.tabBarInfoContainer}>
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-around'}}>
+                            <View style={{flex: 0.8, flexDirection: 'column', justifyContent: 'center'}}>
+                                <Text style={styles.tabBarInfoText}>Need more options? Chat with the guide</Text>
+                            </View>
+                            <View>
+                                <FAB
+                                    small
+                                    icon="chat"
+                                    onPress={() => this.props.navigation.navigate('Chat')}
+                                />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            );
+        }else{
+            return(<LoadingModal/>);
+        }
+    }
 }
 
 const styles = StyleSheet.create({

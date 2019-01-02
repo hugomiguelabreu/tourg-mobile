@@ -7,13 +7,14 @@ import {
     ActivityIndicator,
     View,
     Alert,
-    FlatList
+    FlatList, Modal
 } from 'react-native';
 import {MonoText} from "../components/StyledText";
 import {Title} from "react-native-paper";
 import SearchHeader from "../components/SearchHeader";
 import ActivityCard from "../components/ActivityCard";
 import axios from 'axios';
+import LoadingModal from "../components/LoadingModal";
 
 export default class SearchScreen extends React.Component {
 
@@ -22,7 +23,7 @@ export default class SearchScreen extends React.Component {
         super(props);
         this.state = {
             activities: null,
-            isLoading: true
+            isLoading: true,
         }
     }
 
@@ -58,17 +59,6 @@ export default class SearchScreen extends React.Component {
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
     }
 
-    renderActivities() {
-        if(this.state.activities != null) {
-            this.state.activities.map(activity => {
-                console.log("KEK?");
-                return (
-                    <ActivityCard navigation={this.props.navigation}/>
-                );
-            });
-        }
-    }
-
     render() {
         if(!this.state.isLoading) {
             return (
@@ -79,7 +69,11 @@ export default class SearchScreen extends React.Component {
                                 data={this.state.activities}
                                 keyExtractor={(item, index) => 'item' + index}
                                 renderItem={({item}) =>
-                                        <ActivityCard id={item.id} title="New in town" description={item.description} guideName={item.Guide.User.name} navigation={this.props.navigation}/>
+                                        <ActivityCard id={item.id} title={item.title} description={item.description}
+                                                      activityScore = {item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score)}
+                                                      activityScoreCount = {item.n_activity_score}
+                                                      guideName={item.Guide.User.name} guideJoined={item.Guide.User.createdAt} navigation={this.props.navigation}
+                                                      isChanging={this._isChanging}/>
                                 }
                             />
                         </View>
@@ -87,7 +81,9 @@ export default class SearchScreen extends React.Component {
                 </View>
             );
         }else {
-            return(<ActivityIndicator/>);
+            return(
+                <LoadingModal />
+            );
         }
     }
 }
@@ -105,4 +101,12 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection: 'column',
     },
+    loading: {
+        flex: 1,
+        paddingTop: 15,
+        backgroundColor:'#F1F0F4',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 });

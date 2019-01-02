@@ -5,6 +5,16 @@ import Colors from "../constants/Colors";
 import {Icon} from "expo";
 
 export default class ActivityCard extends React.Component {
+
+    moment = require('moment');
+    joined = null;
+
+    constructor(props){
+        super(props);
+        if(this.props.guideJoined != null)
+            this.joined = this.moment(this.props.guideJoined.replace(/[-:Z]/g, ''));
+    }
+
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column', paddingBottom: 30}}>
@@ -24,7 +34,7 @@ export default class ActivityCard extends React.Component {
                                 </View>
                                 <View style={{flex:1, flexDirection:'column'}}>
                                     <Text style={{fontWeight: '900'}}>{this.props.guideName}</Text>
-                                    <Text style={{fontSize: 11, color:'grey'}}>Joined Aug. 2018</Text>
+                                    <Text style={{fontSize: 11, color:'grey'}}>Joined {this.joined != null ? this.joined.format("MMM YYYY") : ''}</Text>
                                 </View>
                                 <View style={{flex:1, flexDirection:'column', paddingLeft: 10}}>
                                     <Text style={{fontWeight: '900'}}>Rating</Text>
@@ -34,8 +44,8 @@ export default class ActivityCard extends React.Component {
                                             size={12}
                                             style={{ marginTop:0.5, marginRight: 2 }}
                                         />
-                                        <Text style={{ fontSize: 11, color:'grey', marginRight: 5 }}>4.5</Text>
-                                        <Text style={{ fontSize: 11, color:'grey' }}>(143)</Text>
+                                        <Text style={{ fontSize: 11, color:'grey', marginRight: 5 }}>{this.props.activityScore}</Text>
+                                        <Text style={{ fontSize: 11, color:'grey' }}>({this.props.activityScoreCount})</Text>
                                     </View>
                                 </View>
                                 <View style={{flex:1, flexDirection:'column'}}>
