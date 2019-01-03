@@ -37,7 +37,18 @@ export default class SearchScreen extends React.Component {
     componentDidMount() {
         // Set navigation param to execute function on header button
         this.props.navigation.setParams({ getLocation: this._getLocation });
+        // When the screen is focused again let's fetch new results
+        this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                this._getActivities();
+            }
+        );
+    }
+
+    _getActivities() {
         let me = this;
+        this.setState({isLoading: true});
         axios.get('/activities')
             .then((resp) => {
                 console.log(resp.data);

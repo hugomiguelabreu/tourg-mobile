@@ -17,7 +17,7 @@ import {observer} from "mobx-react/native";
                     <Text style={{fontWeight: '900'}}>{userStore.name}</Text>
                     <Text style={{fontSize: 11, color:'grey'}}>Joined August, 2018</Text>
                 </View>
-                <View style={{flex:0.4, flexDirection:'row', justifyContent:'flex-start'}}>
+                <View style={{flex:0.4, flexDirection:'row', justifyContent:'flex-start', paddingLeft: 10}}>
                     <Icon.Ionicons
                         name='md-star'
                         size={16}

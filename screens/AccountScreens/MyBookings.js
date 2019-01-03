@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import ActivityCard from "../../components/ActivityCard";
 import LoadingModal from "../../components/LoadingModal";
+import {Title} from 'react-native-paper';
 import axios from "axios";
 
 export default class MyBookings extends React.Component {
@@ -36,23 +37,33 @@ export default class MyBookings extends React.Component {
             });
     }
 
+    activities = () => {
+        if(this.state.activities.length == 0 || this.state.activities == null){
+            return(<View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Title style={{color:'gray'}}>No booked activities</Title>
+                   </View>);
+        }else{
+            return(<FlatList
+                data={this.state.activities}
+                keyExtractor={(item, index) => 'item' + index}
+                renderItem={({item}) =>
+                    <ActivityCard id={item.id} title={item.title} description={item.description}
+                                  activityScore = {item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score)}
+                                  activityScoreCount = {item.n_activity_score}
+                                  guideName={item.Guide.User.name} guideJoined={item.Guide.User.createdAt} navigation={this.props.navigation}
+                                  isChanging={this._isChanging}/>
+                }
+            />);
+        }
+    }
+
     render() {
         if(!this.state.isLoading) {
             return (
                 <View style={styles.container}>
                     <ScrollView style={styles.container} contentContainerStyle={{flexGrow:1}}>
                         <View style={styles.list}>
-                            <FlatList
-                                data={this.state.activities}
-                                keyExtractor={(item, index) => 'item' + index}
-                                renderItem={({item}) =>
-                                    <ActivityCard id={item.id} title={item.title} description={item.description}
-                                                  activityScore = {item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score)}
-                                                  activityScoreCount = {item.n_activity_score}
-                                                  guideName={item.Guide.User.name} guideJoined={item.Guide.User.createdAt} navigation={this.props.navigation}
-                                                  isChanging={this._isChanging}/>
-                                }
-                            />
+                            {this.activities()}
                         </View>
                     </ScrollView>
                 </View>
