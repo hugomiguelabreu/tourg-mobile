@@ -15,7 +15,7 @@ export default class MyBookings extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            activities: null,
+            bookings: null,
             isLoading: true,
         };
     }
@@ -25,12 +25,22 @@ export default class MyBookings extends React.Component {
     };
 
     componentDidMount() {
-        // Set navigation param to execute function on header button
+        // When the screen is focused again let's fetch new results
+        this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                this._getBookings();
+            }
+        );
+    }
+
+    _getBookings() {
         let me = this;
+        this.setState({isLoading: true});
         axios.get('/user/bookings')
             .then((resp) => {
                 console.log(resp.data);
-                me.setState({activities: resp.data, isLoading:false});
+                me.setState({isLoading:false, bookings: resp.data});
             })
             .catch((err) => {
                 console.log(err);
@@ -38,20 +48,18 @@ export default class MyBookings extends React.Component {
     }
 
     activities = () => {
-        if(this.state.activities.length == 0 || this.state.activities == null){
+        if(this.state.bookings == null || this.state.bookings.length == 0){
             return(<View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <Title style={{color:'gray'}}>No booked activities</Title>
                    </View>);
         }else{
             return(<FlatList
-                data={this.state.activities}
+                data={this.state.bookings}
                 keyExtractor={(item, index) => 'item' + index}
                 renderItem={({item}) =>
-                    <ActivityCard id={item.id} title={item.title} description={item.description}
-                                  activityScore = {item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score)}
-                                  activityScoreCount = {item.n_activity_score}
-                                  guideName={item.Guide.User.name} guideJoined={item.Guide.User.createdAt} navigation={this.props.navigation}
-                                  isChanging={this._isChanging}/>
+                    <ActivityCard id={item.id} title={item.Activity.title} description={item.Activity.description}
+                                  guideName={item.Activity.Guide.User.name} guideJoined={item.Activity.Guide.User.createdAt} navigation={this.props.navigation}
+                                  bookingDate={item.Activity_Date.timestamp}/>
                 }
             />);
         }

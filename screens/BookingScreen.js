@@ -33,15 +33,10 @@ export default class BookingScreen extends React.Component {
 
     moment = require('moment');
     selectedDate = this.moment().format('YYYY-MM-DD');
+
     static navigationOptions = {
-      title: 'BOOKING',
-      headerTitleStyle: {
-        flex: 1,
-        alignSelf: 'center',
-        textAlign: 'center',
-        justifyContent: 'center'
-      },
-      headerRight:<View></View>, // To center title.
+      headerTitle: <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>BOOKING</Title></View>,
+      headerRight: <View></View>, // To center title.
     };
 
     render() {

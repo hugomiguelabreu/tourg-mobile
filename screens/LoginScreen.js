@@ -30,13 +30,7 @@ export default class LoginScreen extends React.Component {
     };
 
     static navigationOptions = {
-        title: 'ACCOUNT',
-        headerTitleStyle: {
-            flex: 1,
-            alignSelf: 'center',
-            textAlign: 'center',
-            justifyContent: 'center'
-        }
+        headerTitle: <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>ACCOUNT</Title></View>,
     };
 
     _login(email, password){

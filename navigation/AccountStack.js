@@ -1,5 +1,4 @@
 import {createMaterialTopTabNavigator, createStackNavigator} from "react-navigation";
-import SettingsScreen from "../screens/SettingsScreen";
 import React from "react";
 import MyBookings from "../screens/AccountScreens/MyBookings";
 import Profile from "../screens/AccountScreens/Profile";

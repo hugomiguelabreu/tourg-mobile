@@ -4,11 +4,11 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import ChatScreen from '../screens/ChatScreen';
 import BookingScreen from "../screens/BookingScreen";
 import AccountScreen from "../screens/AccountScreen";
 import SearchHeader from "../components/SearchHeader";
+import MapScreen from "../screens/MapScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -29,7 +29,7 @@ HomeStack.navigationOptions = {
 };
 
 const MapStack = createStackNavigator({
-  Search: SearchScreen,
+  Map: MapScreen,
 });
 
 MapStack.navigationOptions = {
@@ -59,15 +59,15 @@ SearchStack.navigationOptions = {
 };
 
 const BookingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+  Chat: MapScreen,
 });
 
 BookingsStack.navigationOptions = {
-  tabBarLabel: 'Bookings',
+  tabBarLabel: 'Messages',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-calendar' : 'md-calendar'}
+      name={Platform.OS === 'ios' ? 'ios-chatboxes' : 'md-chatboxes'}
     />
   ),
 };

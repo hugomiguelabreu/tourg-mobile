@@ -83,8 +83,7 @@ export default class SearchScreen extends React.Component {
                                         <ActivityCard id={item.id} title={item.title} description={item.description}
                                                       activityScore = {item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score)}
                                                       activityScoreCount = {item.n_activity_score}
-                                                      guideName={item.Guide.User.name} guideJoined={item.Guide.User.createdAt} navigation={this.props.navigation}
-                                                      isChanging={this._isChanging}/>
+                                                      guideName={item.Guide.User.name} guideJoined={item.Guide.User.createdAt} navigation={this.props.navigation}/>
                                 }
                             />
                         </View>

@@ -6,6 +6,7 @@ import {MonoText} from "../components/StyledText";
 import {Title} from "react-native-paper";
 import SearchHeader from "../components/SearchHeader";
 import ActivityCard from "../components/ActivityCard";
+import userStore from '../stores/UserStore';
 
 const CHATKIT_TOKEN_PROVIDER_ENDPOINT = "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/852f5dbf-eb6e-4513-954a-b198bbd36630/token";
 const CHATKIT_INSTANCE_LOCATOR = "v1:us1:852f5dbf-eb6e-4513-954a-b198bbd36630";
@@ -15,8 +16,7 @@ const CHATKIT_USER_NAME = "111"; // Let's chat as "Dave" for this tutorial
 export default class ChatScreen extends React.Component {
 
     static navigationOptions = {
-        headerTitle: <View style={{flex:1, flexDirection: 'column'}}>
-            <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>CHAT</Title></View></View>,
+        headerTitle: <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>CHAT</Title></View>,
         headerRight:<View></View>, // To center title.
     };
 

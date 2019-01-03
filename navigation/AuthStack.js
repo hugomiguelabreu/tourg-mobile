@@ -5,7 +5,6 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import LoginScreen from "../screens/LoginScreen";
 
 const HomeStack = createStackNavigator({
@@ -39,7 +38,7 @@ SearchStack.navigationOptions = {
     />
   ),
 };
-
+/**
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
@@ -53,6 +52,7 @@ SettingsStack.navigationOptions = {
     />
   ),
 };
+ */
 
 const AccountStack = createStackNavigator({
     Account: LoginScreen,
@@ -72,7 +72,6 @@ export default createBottomTabNavigator(
     {
         HomeStack,
         SearchStack,
-        SettingsStack,
         AccountStack,
     },
     {

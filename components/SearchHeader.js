@@ -13,13 +13,13 @@ export default class SearchHeader extends React.Component {
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column'}}>
-                <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+                <View style={{flex:1, paddingTop:5, alignItems:'center', justifyContent:'center'}}>
                     <Title>FIND ACTIVITIES</Title>
                 </View>
                 <View style={{flex:1, flexDirection: 'row'}}>
                     <TouchableOpacity style={{flex:4}}>
                         <Searchbar
-                            style={{border:0, elevation: 0}}
+                            style={{border:0, elevation: 0, flex:1}}
                             placeholder="Search a city..."
                         />
                     </TouchableOpacity>
