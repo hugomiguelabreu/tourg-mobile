@@ -6,10 +6,10 @@ import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ChatScreen from '../screens/ChatScreen';
 import BookingScreen from "../screens/BookingScreen";
-import AccountScreen from "../screens/AccountScreen";
-import SearchHeader from "../components/SearchHeader";
 import MapScreen from "../screens/MapScreen";
 import RatingScreen from "../screens/RatingScreen";
+import AccountTop from './AccountStack';
+import UserHeader from "../components/UserHeader";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -74,7 +74,16 @@ BookingsStack.navigationOptions = {
 };
 
 const AccountStack = createStackNavigator({
-    Account: AccountScreen,
+    Account: {
+        screen: AccountTop,
+        navigationOptions: ({navigation}) => ({
+            headerTitle: <UserHeader navigation={navigation} />,
+            headerStyle: {
+                height:86,
+                elevation:1,
+            },
+        })
+    },
     Rating: RatingScreen,
 });
 

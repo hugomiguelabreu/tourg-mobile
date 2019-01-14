@@ -5,14 +5,15 @@ import {Divider, FAB, Title} from "react-native-paper";
 import SearchHeader from "../components/SearchHeader";
 import ActivityCard from "../components/ActivityCard";
 import CalendarPicker from "react-native-calendar-picker/CalendarPicker";
-
-
+import {Constants} from 'expo';
 
 export default class ChatScreen extends React.Component {
 
     static navigationOptions = {
-        headerTitle: <View style={{flex:1, flexDirection: 'column'}}>
-            <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>RATING</Title></View></View>,
+        header: null,
+        headerStyle: {
+            marginTop: Constants.statusBarHeight,
+        },
     };
 
 
@@ -22,8 +23,7 @@ export default class ChatScreen extends React.Component {
                 <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1}}>
                     <View style={styles.pic}>
                         <View style={styles.topText}>
-                            <Text style={styles.title}>Kek</Text>
-                            <Text style={styles.rating}>Kappa</Text>
+                            <Text style={styles.title}>London sight seeing</Text>
                         </View>
                     </View>
                 </ScrollView>
