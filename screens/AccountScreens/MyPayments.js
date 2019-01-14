@@ -30,19 +30,21 @@ export default class MyPayments extends React.Component {
                             <List.Section title="Cards">
                                 <List.Item
                                     title="**** **** **** 9825"
+                                    description="Hugo Abreu"
                                     left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name='cc-mastercard' size={24} /> } />}
                                     onPress = {() => {console.log('ola')}}
                                 />
                                 <List.Item
                                     title="**** **** **** 7082"
+                                    description="Jonh Doe"
                                     left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name='cc-visa' size={24} /> } />}
                                     onPress = {() => {console.log('ola')}}
                                 />
                             </List.Section>
                             <List.Section title="Paypal">
                                 <List.Item
-                                    title="jo****3s@gmail.com"
-                                    left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name='cc-paypal' size={24} /> } />}
+                                    title=""
+                                    description="Not yet supported"
                                     onPress = {() => {console.log('ola')}}
                                 />
                             </List.Section>

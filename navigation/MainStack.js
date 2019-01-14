@@ -9,6 +9,7 @@ import BookingScreen from "../screens/BookingScreen";
 import AccountScreen from "../screens/AccountScreen";
 import SearchHeader from "../components/SearchHeader";
 import MapScreen from "../screens/MapScreen";
+import RatingScreen from "../screens/RatingScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -74,6 +75,7 @@ BookingsStack.navigationOptions = {
 
 const AccountStack = createStackNavigator({
     Account: AccountScreen,
+    Rating: RatingScreen,
 });
 
 AccountStack.navigationOptions = {

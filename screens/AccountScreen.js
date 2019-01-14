@@ -19,7 +19,7 @@ export default class AccountScreen extends React.Component {
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column', justifyContent: 'center'}}>
-                <AccountStack />
+                <AccountStack/>
             </View>
         );
     }

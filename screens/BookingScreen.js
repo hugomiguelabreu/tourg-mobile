@@ -7,7 +7,7 @@ import {
     Text,
     InteractionManager,
     View,
-    ActivityIndicator, Modal
+    ActivityIndicator, Modal, FlatList
 } from 'react-native';
 import {MonoText} from "../components/StyledText";
 import {Button, Title, FAB, Divider} from "react-native-paper";
@@ -15,20 +15,69 @@ import {CalendarList} from 'react-native-calendars';
 import CalendarPicker from "react-native-calendar-picker";
 import BookOption from "../components/BookOption";
 import LoadingModal from "../components/LoadingModal";
+import axios from "axios";
+import ActivityCard from "../components/ActivityCard";
 
 export default class BookingScreen extends React.Component {
 
     constructor(props){
         super(props);
         this.state={
+            selectedStartDate: null,
             activityId: this.props.navigation.getParam('activityId', '0'),
-            isLoading: true
+            isLoading: true,
+            activityDetails: null
         }
+        this.onDateChange = this.onDateChange.bind(this);
     }
 
     componentDidMount() {
         //Fetch hours for activity id
-        this.setState({isLoading: false})
+        // When the screen is focused again let's fetch new results
+        this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                this._getDetails();
+            }
+        );
+    }
+
+    _getDetails(){
+        let me = this;
+        this.setState({isLoading: true});
+        axios.get('/activities/' + this.state.activityId)
+            .then((resp) => {
+                console.log(resp.data);
+                me.setState({isLoading:false, activityDetails: resp.data});
+            })
+            .catch((err) => {
+                me.setState({isLoading:false, activityDetails: null});
+                console.log(err);
+            });
+    }
+
+    onDateChange(date) {
+        this.setState({
+            selectedStartDate: date,
+        });
+        console.log(this.moment(this.state.selectedDate).format("YYYY"));
+    }
+
+    hours = () => {
+        if(this.state.activityDetails== null){
+            return(<View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                <Text style={{color:'gray'}}>Activity not available on selected date</Text>
+            </View>);
+        }else{
+            return(<FlatList
+                data={this.state.activityDetails.Activity_Dates}
+                keyExtractor={(item, index) => 'item' + index}
+                renderItem={({item}) =>
+                    <BookOption startHour={this.moment(item.timestamp.replace(/[-:Z]/g, '')).format("HH:mm a")}
+                                endHour={this.moment(item.timestamp.replace(/[-:Z]/g, '')).add(2, 'hours').format("HH:mm a")} minimum='2' price='10.50'/>
+                }
+            />);
+        }
     }
 
     moment = require('moment');
@@ -59,14 +108,12 @@ export default class BookingScreen extends React.Component {
                                         velocityThreshold: 0.1,
                                         directionalOffsetThreshold: 150
                                     }}
-                                    minDate={new Date()}/>
+                                    minDate={new Date()}
+                                    onDateChange={this.onDateChange}/>
                             </View>
                             <Divider/>
                             <View style={{flex: 1, flexDirection: 'column'}}>
-                                <BookOption startHour='9AM' endHour='11AM' minimum='2'/>
-                                <BookOption startHour='13AM' endHour='15AM' minimum='4'/>
-                                <BookOption startHour='16AM' endHour='18AM' minimum='2'/>
-                                <BookOption startHour='19AM' endHour='20AM' minimum='2'/>
+                                {this.hours()}
                             </View>
                         </View>
                     </ScrollView>

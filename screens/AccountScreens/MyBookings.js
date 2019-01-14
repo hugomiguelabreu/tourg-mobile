@@ -43,6 +43,7 @@ export default class MyBookings extends React.Component {
                 me.setState({isLoading:false, bookings: resp.data});
             })
             .catch((err) => {
+                me.setState({isLoading:false, bookings: null});
                 console.log(err);
             });
     }
@@ -59,7 +60,8 @@ export default class MyBookings extends React.Component {
                 renderItem={({item}) =>
                     <ActivityCard id={item.id} title={item.Activity.title} description={item.Activity.description}
                                   guideName={item.Activity.Guide.User.name} guideJoined={item.Activity.Guide.User.createdAt} navigation={this.props.navigation}
-                                  bookingDate={item.Activity_Date.timestamp}/>
+                                  bookingDate={item.Activity_Date.timestamp}
+                                  rating = {true} />
                 }
             />);
         }

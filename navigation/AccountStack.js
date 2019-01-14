@@ -3,6 +3,7 @@ import React from "react";
 import MyBookings from "../screens/AccountScreens/MyBookings";
 import Profile from "../screens/AccountScreens/Profile";
 import MyPayments from "../screens/AccountScreens/MyPayments";
+import RatingScreen from "../screens/RatingScreen";
 
 const MyBookingsStack = createStackNavigator({
     MyBookings: MyBookings,
