@@ -55,7 +55,7 @@ export default class BookingScreen extends React.Component {
                 console.log(err);
             });
     }
-
+Divider
     onDateChange(date) {
         this.setState({
             selectedStartDate: date,
