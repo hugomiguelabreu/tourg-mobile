@@ -44,7 +44,8 @@ export default class RatingScreen extends React.Component {
                             <Card.Cover source={{ uri: 'https://picsum.photos/900' }} />
                             <Card.Content style={{width:(Dimensions.get('window').width/1.5), justifyContent: 'space-between', alignItems: 'flex-end',
                                 position:'absolute', right: 0, bottom: 0}}>
-                                <Title style={{textAlign: 'right'}}>London sightseeing - Best of London city</Title>
+                                <Title style={styles.title}>London sightseeing - Best of London city</Title>
+                                <Title style={styles.ratingText}>5 ★</Title>
                             </Card.Content>
                         </Card>
                         <View style={styles.rating}>
@@ -130,5 +131,18 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         flex:1,
         flexDirection: 'column',
+    },
+    title:{
+        fontWeight: 'bold',
+        fontSize:30,
+        color:'white',
+        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 5
+    },
+
+    ratingText:{
+        color: 'white',
+        alignSelf: 'flex-start'
     },
 });

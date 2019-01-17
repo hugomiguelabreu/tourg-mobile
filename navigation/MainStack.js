@@ -10,6 +10,7 @@ import MapScreen from "../screens/MapScreen";
 import RatingScreen from "../screens/RatingScreen";
 import AccountTop from './AccountStack';
 import UserHeader from "../components/UserHeader";
+import ActivityScreen from "../screens/ActivityScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -46,6 +47,7 @@ MapStack.navigationOptions = {
 const SearchStack = createStackNavigator({
     Search: SearchScreen,
     Booking: BookingScreen,
+    Activity: ActivityScreen,
     Chat: ChatScreen,
 });
 
