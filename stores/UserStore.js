@@ -32,6 +32,10 @@ class User {
         this.bio = data.bio;
     }
 
+    @action updatePhoto(uri){
+        this.photo_path = uri;
+    }
+
     @action logout(){
         this.token = null;
         this.id = null;

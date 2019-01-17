@@ -14,7 +14,11 @@ import {observer} from "mobx-react/native";
         return (
             <View style={{flex:1, flexDirection:'row', alignItems: 'center', justifyContent:'space-around'}}>
                 <View style={{flex:0.2, flexDirection:'column', justifyContent: 'center', alignItems:'center'}}>
-                    <Image style={{width:54, height:54}} source={{uri: 'https://media.istockphoto.com/photos/confident-businessman-posing-in-the-office-picture-id891418990?k=6&m=891418990&s=612x612&w=0&h=BItvQKG0Wf4Ht3XHPxa2LV0WkCtNjhBjkQv28Dhq2pA='}} />
+                    <Image style={{width:54, height:54}}
+                           source={{uri: userStore.photo_path == null ?
+                                   'https://media.istockphoto.com/photos/confident-businessman-posing-in-the-office-picture-id891418990?k=6&m=891418990&s=612x612&w=0&h=BItvQKG0Wf4Ht3XHPxa2LV0WkCtNjhBjkQv28Dhq2pA='
+                                   : userStore.photo_path}}
+                    />
                 </View>
                 <View style={{flex:0.5, flexDirection:'column', justifyContent: 'flex-start', alignItems:'flex-start'}}>
                     <Text style={{fontWeight: '900'}}>{userStore.name}</Text>
