@@ -9,6 +9,7 @@ import ActivityCard from "../../components/ActivityCard";
 import LoadingModal from "../../components/LoadingModal";
 import {Title} from 'react-native-paper';
 import axios from "axios";
+import BookedCard from "../../components/BookedCard";
 
 export default class MyBookings extends React.Component {
 
@@ -58,7 +59,7 @@ export default class MyBookings extends React.Component {
                 data={this.state.bookings}
                 keyExtractor={(item, index) => 'item' + index}
                 renderItem={({item}) =>
-                    <ActivityCard id={item.id} title={item.Activity.title} description={item.Activity.description}
+                    <BookedCard id={item.id} title={item.Activity.title} description={item.Activity.description}
                                   guideName={item.Activity.Guide.User.name} guideJoined={item.Activity.Guide.User.createdAt} navigation={this.props.navigation}
                                   bookingDate={item.Activity_Date.timestamp}
                                   rating = {true} />
