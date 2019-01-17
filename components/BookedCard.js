@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableNativeFeedback, Image, StyleSheet, ActivityIndicator, Modal} from 'react-native';
-import {Title, Card, Paragraph, Button, Divider} from "react-native-paper";
+import {Title, Card, Paragraph, Button, Divider, Subheading} from "react-native-paper";
 import Colors from "../constants/Colors";
 import {Icon} from "expo";
 
@@ -15,6 +15,48 @@ export default class BookedCard extends React.Component {
             this.joined = this.moment(this.props.guideJoined.replace(/[-:Z]/g, ''));
     }
 
+    _confirmed() {
+        return(
+            <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start', alignItems: 'center'}}>
+                <Icon.Ionicons
+                    name='md-checkmark-circle-outline'
+                    size={16}
+                    color='green'
+                    style={{ marginRight: 0 }}
+                />
+                <Subheading style={{fontSize:14, color:'green', marginLeft: 10}}>Confirmed</Subheading>
+            </View>
+        );
+    }
+
+    _pending() {
+        return(
+            <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start', alignItems: 'center'}}>
+                <Icon.Ionicons
+                    name='md-time'
+                    size={16}
+                    color='orange'
+                    style={{ marginRight: 0 }}
+                />
+                <Subheading style={{fontSize:14, color:'orange', marginLeft: 10}}>Pending</Subheading>
+            </View>
+        );
+    }
+
+    _canceled() {
+        return(
+            <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start', alignItems: 'center'}}>
+                <Icon.Ionicons
+                    name='md-close-circle-outline'
+                    size={16}
+                    color='red'
+                    style={{ marginRight: 0 }}
+                />
+                <Subheading style={{fontSize:14, color:'red', marginLeft: 10}}>Canceled</Subheading>
+            </View>
+        );
+    }
+
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column', paddingBottom: 30}}>
@@ -23,8 +65,13 @@ export default class BookedCard extends React.Component {
                     <Card style={{flex:1}}>
                         <Card.Cover style={{height:120}} source={{ uri: 'https://picsum.photos/500/?random' }} />
                         <Card.Content style={{flex:1, paddingTop: 5}}>
-                            <Title>{this.props.title}</Title>
-                            <Paragraph numberOfLines={2}>{this.props.description}</Paragraph>
+                            <View style={{flex:1, flexDirection:'row'}}>
+                                <View style={{flex:3, flexDirection:'column'}}>
+                                    <Title>{this.props.title}</Title>
+                                    <Paragraph numberOfLines={2}>{this.props.description}</Paragraph>
+                                </View>
+                                {this._pending()}
+                            </View>
                         </Card.Content>
                         <Divider style={{marginTop: 10, marginBottom: 2}} />
                         <Card.Actions>
