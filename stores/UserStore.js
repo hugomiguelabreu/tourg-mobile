@@ -11,6 +11,7 @@ class User {
     @persist @observable name = "";
     @persist @observable phone = "";
     @persist @observable bio = "";
+    @persist @observable createdAt = null;
     @persist @observable photo_path = null;
 
     @action login(data){
@@ -21,6 +22,7 @@ class User {
         this.name = data.user.name;
         this.phone = data.user.phone;
         this.bio = data.user.bio;
+        this.createdAt = data.user.createdAt;
         this.photo_path = data.user.photo_path;
     }
 
@@ -38,6 +40,7 @@ class User {
         this.name = "";
         this.phone = "";
         this.bio = "";
+        this.createdAt = null;
         this.photo_path = null;
     }
 }
