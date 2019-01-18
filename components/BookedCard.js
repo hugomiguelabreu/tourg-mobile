@@ -61,7 +61,8 @@ export default class BookedCard extends React.Component {
         return (
             <View style={{flex:1, flexDirection: 'column', paddingBottom: 30}}>
                 <TouchableNativeFeedback
-                    onPress={() => {this.props.navigation.navigate('Rating', {activityId: this.props.id})}}>
+                    onPress={() => {this.props.navigation.navigate('Rating', {activityId: this.props.id, guideId: this.props.guideId, activityTitle: this.props.title,
+                        activityRating:this.props.activityScore})}}>
                     <Card style={{flex:1}}>
                         <Card.Cover style={{height:120}} source={{ uri: 'https://picsum.photos/500/?random' }} />
                         <Card.Content style={{flex:1, paddingTop: 5}}>

@@ -59,7 +59,8 @@ export default class MyBookings extends React.Component {
                 data={this.state.bookings}
                 keyExtractor={(item, index) => 'item' + index}
                 renderItem={({item}) =>
-                    <BookedCard id={item.id} title={item.Activity.title} description={item.Activity.description}
+                    <BookedCard id={item.Activity.id} title={item.Activity.title} description={item.Activity.description}
+                                  guideId={item.Activity.Guide.id} activityScore={item.Activity.total_activity_score == null ? 0 : Math.round((item.Activity.total_activity_score / item.Activity.n_activity_score))}
                                   guideName={item.Activity.Guide.User.name} guideJoined={item.Activity.Guide.User.createdAt} navigation={this.props.navigation}
                                   bookingDate={item.Activity_Date.timestamp}
                                   rating = {true} />
