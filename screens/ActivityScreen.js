@@ -1,7 +1,10 @@
 import React from 'react';
-import {View, Text, Image, ScrollView, StyleSheet, Dimensions} from "react-native";
-import {Button, Card, Title} from "react-native-paper";
+import {View, Text, Image, ScrollView, StyleSheet, Dimensions, TouchableNativeFeedback, TouchableOpacity} from "react-native";
+import {Button, Card, Paragraph, Title} from "react-native-paper";
 import {Icon} from "expo";
+import Timeline from "react-native-timeline-listview";
+import MapViewAnimated, {PROVIDER_GOOGLE} from "react-native-maps";
+import {AirbnbRating} from "react-native-ratings";
 
 
 export default class ActivityScreen extends React.Component {
@@ -10,6 +13,13 @@ export default class ActivityScreen extends React.Component {
         super(props);
         this.state = {activity_id : 1};
         this.fetchActivityData(0);
+        this.data = [
+            {time: '', title: 'Visitar a Sé', description: 'Visitar a Sé de Braga incluindo o tesouro'},
+            {time: '', title: 'Event 2', description: 'Event 2 Description'},
+            {time: '', title: 'Event 3', description: 'Event 3 Description'},
+            {time: '', title: 'Event 4', description: 'Event 4 Description'},
+            {time: '', title: 'Event 5', description: 'Event 5 Description'}
+        ]
     }
 
     static navigationOptions = {
@@ -50,7 +60,7 @@ export default class ActivityScreen extends React.Component {
                             &nbsp;
                             <Icon.Ionicons
                                 name='ios-star'
-                                size={14}
+                                size={20}
                                 style={{ alignSelf:'flex-start', margin:0 }}
                             />
                         </Title>
@@ -60,51 +70,114 @@ export default class ActivityScreen extends React.Component {
                 <View style={styles.quickinfo}>
 
                     <View style={styles.priceBook}>
-                        <View style={styles.pricing}><Text style={styles.pricing}>{this.state.price}€ per person</Text></View>
-                        <View style={styles.booking}><Button style={styles.button} title="sdsad" onPress={()=>{}}>Book</Button></View>
+                        <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'space-around'}}>
+                            <Text>{this.state.price}€ per person</Text>
+                        </View>
+                        <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'space-around'}}>
+                            <TouchableOpacity
+                                onPress={() => {console.log("kek")}}>
+                                <Button mode="contained" style={{padding:5}}>
+                                    BOOK
+                                </Button>
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
                     <View style={styles.info}>
-
-                        <View styles={styles.quickInfoLine}>
-                            <Text style={styles.quickInfoText}>
-
-                                  {this.state.location}, {this.state.city}
-                            </Text>
+                        <View style={styles.quickInfoLine}>
+                            <Icon.Ionicons
+                                name='md-map'
+                                size={14}
+                                style={{ alignSelf:'flex-start', margin:0 }}
+                            />
+                            <Text style={{marginLeft:5}}>{this.state.location}, {this.state.city}</Text>
                         </View>
-
-                        <View styles={styles.quickInfoLine}>
-                            <Text style={styles.quickInfoText}>
-
-                                  Between {this.state.min} and {this.state.max} people
-                            </Text>
+                        <View style={styles.quickInfoLine}>
+                            <Icon.Ionicons
+                                name='ios-people'
+                                size={14}
+                                style={{ alignSelf:'flex-start', margin:0 }}
+                            />
+                            <Text style={{marginLeft:5}}>Between {this.state.min} and {this.state.max} people</Text>
                         </View>
-
-                        <View styles={styles.quickInfoLine}>
-
-                            <Text style={styles.quickInfoText}>
-
-                                  {this.state.hours} hours and {this.state.minutes} minutes
-                            </Text>
+                        <View style={styles.quickInfoLine}>
+                            <Icon.Ionicons
+                                name='ios-time'
+                                size={14}
+                                style={{ alignSelf:'flex-start', margin:0 }}
+                            />
+                            <Text style={{marginLeft:5}}>{this.state.hours} hours and {this.state.minutes} minutes</Text>
                         </View>
-
-                        <View styles={styles.quickInfoLine}>
-
-                            <Text style={styles.quickInfoText}>
-
-                                  {this.state.language.join(", ")}
-                            </Text>
+                        <View style={styles.quickInfoLine}>
+                            <Icon.Ionicons
+                                name='ios-chatbubbles'
+                                size={14}
+                                style={{ alignSelf:'flex-start', margin:0 }}
+                            />
+                            <Text style={{marginLeft:5}}>{this.state.language.join(", ")}</Text>
                         </View>
 
                     </View>
                 </View>
-
-                <View style={styles.about}>
-                    <Text style={styles.aboutTitle}>About</Text>
+                <View style={styles.section}>
+                    <Title style={styles.sectionTitle}>About</Title>
                     <Text style={styles.aboutText}>{this.state.about}</Text>
                 </View>
-
-
+                <View style={styles.section}>
+                    <Title style={styles.sectionTitle}>Highlights</Title>
+                </View>
+                <Timeline
+                    style={{paddingTop:15, backgroundColor:'white', marginBottom:15, marginTop: -15}}
+                    descriptionStyle={{color:'gray'}}
+                    innerCircle={'dot'}
+                    lineColor='#2E3C58'
+                    circleColor='#349D88'
+                    data={this.data}
+                />
+                <View style={styles.section}>
+                    <Title style={styles.sectionTitle}>Map</Title>
+                </View>
+                <MapViewAnimated
+                    provider={PROVIDER_GOOGLE}
+                    region={this.state.region}
+                    style={styles.map}
+                    showsUserLocation={true}>
+                </MapViewAnimated>
+                <View style={styles.section}>
+                    <Title style={styles.sectionTitle}>Guide</Title>
+                    <TouchableNativeFeedback>
+                        <View style={{flex:0.5, flexDirection: 'row'}}>
+                            <View style={{flex:0.3, flexDirection:'column', justifyContent: 'center', alignItems:'center'}}>
+                                <Image style={{width:54, height:54}} source={{uri: 'https://media.istockphoto.com/photos/confident-businessman-posing-in-the-office-picture-id891418990?k=6&m=891418990&s=612x612&w=0&h=BItvQKG0Wf4Ht3XHPxa2LV0WkCtNjhBjkQv28Dhq2pA='}} />
+                            </View>
+                            <View style={{flex:1, flexDirection:'column', alignItems:'center', justifyContent:'space-between'}}>
+                                <View style={{flex:1, flexDirection:'row', justifyContent: 'center', marginLeft:25, marginBottom: 10}}>
+                                    <View style={{flex:1, flexDirection:'column', justifyContent: 'flex-start', alignItems:'flex-start'}}>
+                                        <Text style={{fontWeight: '900'}}>João</Text>
+                                        <Text style={{fontSize: 11, color:'grey'}}>Joined August, 2018</Text>
+                                    </View>
+                                    <View style={{flex:1, flexDirection:'column', justifyContent: 'flex-start', alignItems:'flex-start'}}>
+                                        <Text style={{fontWeight: '900'}}>Rating</Text>
+                                        <View style={{flex:0.4, flexDirection:'row', justifyContent:'flex-start'}}>
+                                            <Icon.Ionicons
+                                                name='md-star'
+                                                size={11}
+                                                style={{ marginTop:0.5, marginRight: 5 }}
+                                            />
+                                            <Text style={{ fontSize: 11, color:'grey', marginRight: 5 }}>4.5</Text>
+                                            <Text style={{ fontSize: 11, color:'grey' }}>(143)</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={{flex:1, flexDirection:'row', justifyContent: 'center', marginLeft:25, marginRight: 5}}>
+                                    <Paragraph numberOfLines={4} style={styles.aboutText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Nunc mollis sodales dignissim. Nullam ornare sollicitudin eleifend.
+                                        Nam iaculis ligula risus, non lobortis diam dignissim id. In hac habitasse platea dictumst.</Paragraph>
+                                </View>
+                            </View>
+                        </View>
+                    </TouchableNativeFeedback>
+                </View>
             </ScrollView>
             </View>
 
@@ -113,7 +186,11 @@ export default class ActivityScreen extends React.Component {
 };
 
 const styles = StyleSheet.create({
-
+    map: {
+        height:300,
+        marginBottom: 15,
+        marginTop: -10
+    },
     container: {
         flex:1,
         flexDirection: 'column'
@@ -153,8 +230,6 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start'
     },
 
-    pricing:{flex:0,textAlign: 'center'},
-    booking: {flex:1,alignSelf: "stretch"},
     button:{
         backgroundColor: "white",
         alignContent: 'center',
@@ -176,13 +251,16 @@ const styles = StyleSheet.create({
     priceBook:{
         flex:0.66,
         flexDirection: 'column',
-        textAlign: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-around'
     },
 
 
     quickInfoLine:{
         flex:1,
-        flexDirection: 'row', justifyContent: 'space-between'
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        padding: 2
     },
 
 
@@ -200,14 +278,20 @@ const styles = StyleSheet.create({
     bookInfo:{},
     bookButton:{height: 50},
 
-    about:{flex:1},
-    aboutTitle:{
-        fontSize: 25,
-        marginTop: 10,
-        marginLeft: 25},
+    section:{
+        flex:1,
+        flexDirection: 'column',
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingBottom: 15,
+    },
+
+    sectionTitle:{
+        paddingBottom: 5,
+        marginLeft:10
+    },
 
     aboutText:{
-        margin: 10,
         color: '#9D9DA3',
         fontSize: 14
     }

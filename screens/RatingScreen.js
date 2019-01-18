@@ -15,7 +15,7 @@ import {Card, Button, FAB, Title, Subheading, TextInput} from "react-native-pape
 import SearchHeader from "../components/SearchHeader";
 import ActivityCard from "../components/ActivityCard";
 import {AirbnbRating} from "react-native-ratings";
-import {Constants} from 'expo';
+import {Constants, Icon} from 'expo';
 import {Header} from "react-navigation";
 
 export default class RatingScreen extends React.Component {
@@ -40,12 +40,20 @@ export default class RatingScreen extends React.Component {
                 <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset = {Header.HEIGHT - 30} enabled>
                 <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1}}>
                     <View style={styles.welcomeContainer}>
-                        <Card style={{position:'relative'}}>
+                        <Card style={{flex:4, flexDirection:'column'}}>
                             <Card.Cover source={{ uri: 'https://picsum.photos/900' }} />
-                            <Card.Content style={{width:(Dimensions.get('window').width/1.5), justifyContent: 'space-between', alignItems: 'flex-end',
+                            <Card.Content style={{width:(Dimensions.get('window').width/1.65), justifyContent: 'space-between', alignItems: 'flex-end',
                                 position:'absolute', right: 0, bottom: 0}}>
                                 <Title style={styles.title}>London sightseeing - Best of London city</Title>
-                                <Title style={styles.ratingText}>5 ★</Title>
+                                <Title style={styles.ratingText}>
+                                    4.5
+                                    &nbsp;
+                                    <Icon.Ionicons
+                                        name='ios-star'
+                                        size={20}
+                                        style={{ alignSelf:'flex-start', margin:0 }}
+                                    />
+                                </Title>
                             </Card.Content>
                         </Card>
                         <View style={styles.rating}>
@@ -92,14 +100,14 @@ export default class RatingScreen extends React.Component {
                                 </View>
                             </View>
                             <View style={{flex:1, paddingBottom: 15}}>
-                                <TouchableOpacity
+                                <TouchableNativeFeedback
                                     style={styles.button}
                                     onPress={() => {this._register(this.state.registerName, this.state.registerEmail, this.state.registerPassword, this.state.registerPhone)}}>
                                     <Button mode="contained"
                                             style={styles.buttonLogin}>
                                         SUBMIT
                                     </Button>
-                                </TouchableOpacity>
+                                </TouchableNativeFeedback>
                             </View>
                         </View>
                     </View>
