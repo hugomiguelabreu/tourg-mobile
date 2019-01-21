@@ -55,16 +55,16 @@ export default class BookingScreen extends React.Component {
                 console.log(err);
             });
     }
-Divider
-    onDateChange(date) {
+
+    onDateChange = (date) => {
         this.setState({
             selectedStartDate: date,
         });
-        console.log(this.moment(this.state.selectedDate).format("YYYY"));
+        console.log(this.moment(date).format("DD-MM-YYYY"));
     }
 
     hours = () => {
-        if(this.state.activityDetails== null){
+        if(this.state.activityDetails == null){
             return(<View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                 <Text style={{color:'gray'}}>Activity not available on selected date</Text>
             </View>);
@@ -100,7 +100,7 @@ Divider
                                     backgroundColor: 'grey',
                                     padding: 25,
                                     width: Dimensions.get('window').width
-                                }}></View>
+                                }} />
                                 <CalendarPicker
                                     selectedDayColor="white"
                                     selectedDayTextColor="black"
