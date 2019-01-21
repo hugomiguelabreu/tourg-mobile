@@ -3,22 +3,37 @@ import {View, Text, Image, ScrollView, StyleSheet, Dimensions, TouchableNativeFe
 import {Button, Card, Paragraph, Title} from "react-native-paper";
 import {Icon} from "expo";
 import Timeline from "react-native-timeline-listview";
-import MapViewAnimated, {PROVIDER_GOOGLE} from "react-native-maps";
-import {AirbnbRating} from "react-native-ratings";
+import MapViewAnimated, {PROVIDER_GOOGLE, Circle, Marker} from "react-native-maps";
+import LoadingModal from "../components/LoadingModal";
+import axios from "axios";
 
 
 export default class ActivityScreen extends React.Component {
 
+    moment = require('moment');
+
     constructor(props) {
         super(props);
-        this.state = {activity_id : 1};
-        this.fetchActivityData(0);
+        this.state = {
+            isLoading: true,
+            activity_id : this.props.navigation.state.params.activityId,
+            title: '',
+            city: '',
+            description: '',
+            image: '',
+            total_activity_score: null,
+            n_activity_score: 0,
+            region:null,
+            guideName: '',
+            guideBio: '',
+            guideTotalScore: null,
+            guideNScore: 0,
+            guideJoined: null,
+        };
         this.data = [
-            {time: '', title: 'Visitar a Sé', description: 'Visitar a Sé de Braga incluindo o tesouro'},
-            {time: '', title: 'Event 2', description: 'Event 2 Description'},
-            {time: '', title: 'Event 3', description: 'Event 3 Description'},
-            {time: '', title: 'Event 4', description: 'Event 4 Description'},
-            {time: '', title: 'Event 5', description: 'Event 5 Description'}
+            {time: '', title: 'Sé de Braga', description: 'Visitar a Sé de Braga incluindo o tesouro'},
+            {time: '', title: 'Almoço', description: 'Almoçar no centro de Braga'},
+            {time: '', title: 'Museu da Imagem', description: 'Visita ao Museu da Imagem'},
         ]
     }
 
@@ -28,160 +43,245 @@ export default class ActivityScreen extends React.Component {
         },
     };
 
-    fetchActivityData(activity_id){
-        this.state = {
-                activity_id: 2,
-                title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                image: 'image_url',
-                stars: 4.5,
-                price: 70,
-                location: "Picoto",
-                city: "Braga",
-                min: 2,
-                max: 10,
-                hours: 2,
-                minutes: 30,
-                language: ["Portuguese", "English", "French"],
-                about: "Aliquam ullamcorper arcu. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis sodales eget tellus vitae porttitor. Ut et maximus urna. Mauris vestibulum magna sed mauris luctus, non sodales eros pulvinar. Duis fermentum id arcu a iaculis. Quisque congue convallis tempor. Nullam ullamcorper maximus nisi, vitae tincidunt tortor pulvinar in. Proin ac euismod tellus. Integer ut placerat sapien. In dictum orci eros, in varius mi consectetur tempus. Nam iaculis sed nibh quis tincidunt. Nulla eu rutrum metus.",
-            };
+    componentDidMount() {
+        // When the screen is focused again let's fetch new results
+        this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                this._fetchActivityData();
+            }
+        );
+    }
+
+    _fetchActivityData(){
+
+        let me = this;
+        this.setState({isLoading: true});
+        axios.get('/activities/' + this.state.activity_id)
+            .then((resp) => {
+                console.log(resp.data);
+                me.setState({
+                    title: resp.data.title,
+                    city: resp.data.city,
+                    description: resp.data.description,
+                    total_activity_score: resp.data.total_activity_score,
+                    n_activity_score: resp.data.n_activity_score,
+                    region:{latitude:resp.data.lat, longitude:resp.data.lng, latitudeDelta: 0.0122, longitudeDelta: 0.0021},
+                    guideName: resp.data.Guide.User.name,
+                    guideBio: resp.data.Guide.User.bio,
+                    guideTotalScore: resp.data.Guide.total_guide_score,
+                    guideNScore: resp.data.Guide.n_guide_score,
+                    guideJoined: this.moment(resp.data.Guide.User.createdAt.replace(/[-:Z]/g, '')),
+                    isLoading:false
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     render() {
-        return(
-            <View style={styles.container}>
-            <ScrollView style={styles.container}>
-                <Card style={{flex:4, flexDirection:'column'}}>
-                    <Card.Cover source={{ uri: 'https://picsum.photos/900' }} />
-                    <Card.Content style={{width:(Dimensions.get('window').width/1.65), justifyContent: 'space-between', alignItems: 'flex-end',
-                        position:'absolute', right: 0, bottom: 0}}>
-                        <Title style={styles.title}>London sightseeing - Best of London city</Title>
-                        <Title style={styles.rating}>
-                            {this.state.stars}
-                            &nbsp;
-                            <Icon.Ionicons
-                                name='ios-star'
-                                size={20}
-                                style={{ alignSelf:'flex-start', margin:0 }}
-                            />
-                        </Title>
-                    </Card.Content>
-                </Card>
-
-                <View style={styles.quickinfo}>
-
-                    <View style={styles.priceBook}>
-                        <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'space-around'}}>
-                            <Text>{this.state.price}€ per person</Text>
-                        </View>
-                        <View style={{flex:1, flexDirection:'row', alignItems:'center', justifyContent:'space-around'}}>
-                            <TouchableOpacity
-                                onPress={() => {console.log("kek")}}>
-                                <Button mode="contained" style={{padding:5}}>
-                                    BOOK
-                                </Button>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <View style={styles.info}>
-                        <View style={styles.quickInfoLine}>
-                            <Icon.Ionicons
-                                name='md-map'
-                                size={14}
-                                style={{ alignSelf:'flex-start', margin:0 }}
-                            />
-                            <Text style={{marginLeft:5}}>{this.state.location}, {this.state.city}</Text>
-                        </View>
-                        <View style={styles.quickInfoLine}>
-                            <Icon.Ionicons
-                                name='ios-people'
-                                size={14}
-                                style={{ alignSelf:'flex-start', margin:0 }}
-                            />
-                            <Text style={{marginLeft:5}}>Between {this.state.min} and {this.state.max} people</Text>
-                        </View>
-                        <View style={styles.quickInfoLine}>
-                            <Icon.Ionicons
-                                name='ios-time'
-                                size={14}
-                                style={{ alignSelf:'flex-start', margin:0 }}
-                            />
-                            <Text style={{marginLeft:5}}>{this.state.hours} hours and {this.state.minutes} minutes</Text>
-                        </View>
-                        <View style={styles.quickInfoLine}>
-                            <Icon.Ionicons
-                                name='ios-chatbubbles'
-                                size={14}
-                                style={{ alignSelf:'flex-start', margin:0 }}
-                            />
-                            <Text style={{marginLeft:5}}>{this.state.language.join(", ")}</Text>
-                        </View>
-
-                    </View>
-                </View>
-                <View style={styles.section}>
-                    <Title style={styles.sectionTitle}>About</Title>
-                    <Text style={styles.aboutText}>{this.state.about}</Text>
-                </View>
-                <View style={styles.section}>
-                    <Title style={styles.sectionTitle}>Highlights</Title>
-                </View>
-                <Timeline
-                    style={{paddingTop:15, backgroundColor:'white', marginBottom:15, marginTop: -15}}
-                    descriptionStyle={{color:'gray'}}
-                    innerCircle={'dot'}
-                    lineColor='#2E3C58'
-                    circleColor='#349D88'
-                    data={this.data}
-                />
-                <View style={styles.section}>
-                    <Title style={styles.sectionTitle}>Map</Title>
-                </View>
-                <MapViewAnimated
-                    provider={PROVIDER_GOOGLE}
-                    region={this.state.region}
-                    style={styles.map}
-                    showsUserLocation={true}>
-                </MapViewAnimated>
-                <View style={styles.section}>
-                    <Title style={styles.sectionTitle}>Guide</Title>
-                    <TouchableNativeFeedback>
-                        <View style={{flex:0.5, flexDirection: 'row'}}>
-                            <View style={{flex:0.3, flexDirection:'column', justifyContent: 'center', alignItems:'center'}}>
-                                <Image style={{width:54, height:54}} source={{uri: 'https://media.istockphoto.com/photos/confident-businessman-posing-in-the-office-picture-id891418990?k=6&m=891418990&s=612x612&w=0&h=BItvQKG0Wf4Ht3XHPxa2LV0WkCtNjhBjkQv28Dhq2pA='}} />
-                            </View>
-                            <View style={{flex:1, flexDirection:'column', alignItems:'center', justifyContent:'space-between'}}>
-                                <View style={{flex:1, flexDirection:'row', justifyContent: 'center', marginLeft:25, marginBottom: 10}}>
-                                    <View style={{flex:1, flexDirection:'column', justifyContent: 'flex-start', alignItems:'flex-start'}}>
-                                        <Text style={{fontWeight: '900'}}>João</Text>
-                                        <Text style={{fontSize: 11, color:'grey'}}>Joined August, 2018</Text>
+        if(!this.state.isLoading) {
+            return (
+                <View style={styles.container}>
+                    <ScrollView style={styles.container}>
+                        <Card style={{flex: 4, flexDirection: 'column'}}>
+                            <Card.Cover source={{uri: 'https://picsum.photos/900'}}/>
+                            <Card.Content style={{
+                                width: (Dimensions.get('window').width / 1.65),
+                                justifyContent: 'space-between',
+                                alignItems: 'flex-end',
+                                position: 'absolute',
+                                right: 0,
+                                bottom: 0
+                            }}>
+                                <Title style={styles.title}>{this.state.title}</Title>
+                                <Title style={styles.rating}>
+                                    {this.state.total_activity_score == null ? 0 : (this.state.total_activity_score / this.state.n_activity_score).toFixed(1)}
+                                    &nbsp;
+                                    <Icon.Ionicons
+                                        name='ios-star'
+                                        size={20}
+                                        style={{alignSelf: 'flex-start', margin: 0}}
+                                    />
+                                </Title>
+                            </Card.Content>
+                        </Card>
+                        <View style={styles.quickinfo}>
+                            <View style={styles.priceBook}>
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-around'
+                                }}>
+                                    <Text>45€ per person</Text>
+                                </View>
+                                <TouchableNativeFeedback
+                                    onPress={() => {this.props.navigation.navigate('Booking', {activityId: this.state.activity_id})}
+                                    }>
+                                    <View style={{
+                                        flex: 1,
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-around'
+                                    }}>
+                                        <Button mode="contained" style={{padding: 5}}>
+                                            BOOK
+                                        </Button>
                                     </View>
-                                    <View style={{flex:1, flexDirection:'column', justifyContent: 'flex-start', alignItems:'flex-start'}}>
-                                        <Text style={{fontWeight: '900'}}>Rating</Text>
-                                        <View style={{flex:0.4, flexDirection:'row', justifyContent:'flex-start'}}>
-                                            <Icon.Ionicons
-                                                name='md-star'
-                                                size={11}
-                                                style={{ marginTop:0.5, marginRight: 5 }}
-                                            />
-                                            <Text style={{ fontSize: 11, color:'grey', marginRight: 5 }}>4.5</Text>
-                                            <Text style={{ fontSize: 11, color:'grey' }}>(143)</Text>
+                                </TouchableNativeFeedback>
+                            </View>
+                            <View style={styles.info}>
+                                <View style={styles.quickInfoLine}>
+                                    <Icon.Ionicons
+                                        name='md-map'
+                                        size={14}
+                                        style={{alignSelf: 'flex-start', margin: 0}}
+                                    />
+                                    <Text style={{marginLeft: 5}}>{this.state.city}, Portugal</Text>
+                                </View>
+                                <View style={styles.quickInfoLine}>
+                                    <Icon.Ionicons
+                                        name='ios-people'
+                                        size={14}
+                                        style={{alignSelf: 'flex-start', margin: 0}}
+                                    />
+                                    <Text
+                                        style={{marginLeft: 5}}>Between 2 and 4 people</Text>
+                                </View>
+                                <View style={styles.quickInfoLine}>
+                                    <Icon.Ionicons
+                                        name='ios-time'
+                                        size={14}
+                                        style={{alignSelf: 'flex-start', margin: 0}}
+                                    />
+                                    <Text style={{marginLeft: 5}}>5 hours
+                                        and 30 minutes</Text>
+                                </View>
+                                <View style={styles.quickInfoLine}>
+                                    <Icon.Ionicons
+                                        name='ios-chatbubbles'
+                                        size={14}
+                                        style={{alignSelf: 'flex-start', margin: 0}}
+                                    />
+                                    <Text style={{marginLeft: 5}}>Portugues</Text>
+                                </View>
+
+                            </View>
+                        </View>
+                        <View style={styles.section}>
+                            <Title style={styles.sectionTitle}>About</Title>
+                            <Text style={styles.aboutText}>{this.state.description}</Text>
+                        </View>
+                        <View style={styles.section}>
+                            <Title style={styles.sectionTitle}>Highlights</Title>
+                        </View>
+                        <Timeline
+                            style={{paddingTop: 15, backgroundColor: 'white', marginBottom: 15, marginTop: -15}}
+                            descriptionStyle={{color: 'gray'}}
+                            innerCircle={'dot'}
+                            lineColor='#2E3C58'
+                            circleColor='#349D88'
+                            data={this.data}
+                        />
+                        <View style={styles.section}>
+                            <Title style={styles.sectionTitle}>Map</Title>
+                        </View>
+                        <MapViewAnimated
+                            provider={PROVIDER_GOOGLE}
+                            region={this.state.region}
+                            style={styles.map}
+                            customMapStyle={mapStyle}
+                            showsUserLocation={true}>
+                            <Marker coordinate={this.state.region} tracksViewChanges={false}/>
+                            <Circle center={this.state.region} radius={500}
+                                    strokeColor='#FF0000'
+                                    fillColor='rgba(255,0,0,0.4)'/>
+                        </MapViewAnimated>
+                        <View style={styles.section}>
+                            <Title style={styles.sectionTitle}>Guide</Title>
+                            <TouchableNativeFeedback>
+                                <View style={{flex: 0.5, flexDirection: 'row'}}>
+                                    <View style={{
+                                        flex: 0.3,
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                        <Image style={{width: 54, height: 54}}
+                                               source={{uri: 'https://media.istockphoto.com/photos/confident-businessman-posing-in-the-office-picture-id891418990?k=6&m=891418990&s=612x612&w=0&h=BItvQKG0Wf4Ht3XHPxa2LV0WkCtNjhBjkQv28Dhq2pA='}}/>
+                                    </View>
+                                    <View style={{
+                                        flex: 1,
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                        <View style={{
+                                            flex: 1,
+                                            flexDirection: 'row',
+                                            justifyContent: 'center',
+                                            marginLeft: 25,
+                                            marginBottom: 10
+                                        }}>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'column',
+                                                justifyContent: 'flex-start',
+                                                alignItems: 'flex-start'
+                                            }}>
+                                                <Text style={{fontWeight: '900'}}>{this.state.guideName}</Text>
+                                                <Text style={{fontSize: 11, color: 'grey'}}>Joined {this.state.guideJoined != null ? this.state.guideJoined.format("MMM, YYYY") : ''}</Text>
+                                            </View>
+                                            <View style={{
+                                                flex: 1,
+                                                flexDirection: 'column',
+                                                justifyContent: 'flex-start',
+                                                alignItems: 'flex-start'
+                                            }}>
+                                                <Text style={{fontWeight: '900'}}>Rating</Text>
+                                                <View style={{
+                                                    flex: 0.4,
+                                                    flexDirection: 'row',
+                                                    justifyContent: 'flex-start'
+                                                }}>
+                                                    <Icon.Ionicons
+                                                        name='md-star'
+                                                        size={11}
+                                                        style={{marginTop: 0.5, marginRight: 5}}
+                                                    />
+                                                    <Text
+                                                        style={{fontSize: 11, color: 'grey', marginRight: 5}}>
+                                                        {this.state.guideTotalScore == null ? 0 : (this.state.guideTotalScore / this.state.guideNScore).toFixed(1)}
+                                                    </Text>
+                                                    <Text style={{fontSize: 11, color: 'grey'}}>({this.state.guideNScore})</Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                        <View style={{
+                                            flex: 1,
+                                            flexDirection: 'row',
+                                            justifyContent: 'center',
+                                            marginLeft: 25,
+                                            marginRight: 5
+                                        }}>
+                                            <Paragraph numberOfLines={4} style={styles.aboutText}>
+                                                {this.state.guideBio}
+                                            </Paragraph>
                                         </View>
                                     </View>
                                 </View>
-                                <View style={{flex:1, flexDirection:'row', justifyContent: 'center', marginLeft:25, marginRight: 5}}>
-                                    <Paragraph numberOfLines={4} style={styles.aboutText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Nunc mollis sodales dignissim. Nullam ornare sollicitudin eleifend.
-                                        Nam iaculis ligula risus, non lobortis diam dignissim id. In hac habitasse platea dictumst.</Paragraph>
-                                </View>
-                            </View>
+                            </TouchableNativeFeedback>
                         </View>
-                    </TouchableNativeFeedback>
+                    </ScrollView>
                 </View>
-            </ScrollView>
-            </View>
-
-        );
+            );
+        }else{
+            return(
+                <LoadingModal/>
+            );
+        }
     }
 };
 
@@ -227,7 +327,7 @@ const styles = StyleSheet.create({
 
     rating:{
         color: 'white',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-end'
     },
 
     button:{
@@ -295,11 +395,266 @@ const styles = StyleSheet.create({
         color: '#9D9DA3',
         fontSize: 14
     }
-
-
-
-
 });
+
+const mapStyle = [
+    {
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#ebe3cd"
+            }
+        ]
+    },
+    {
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#523735"
+            }
+        ]
+    },
+    {
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "color": "#f5f1e6"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#c9b2a6"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.land_parcel",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#dcd2be"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.land_parcel",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#ae9e90"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape.natural",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#dfd2ae"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#dfd2ae"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#93817c"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.business",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#a5b076"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#447530"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#f5f1e6"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#fdfcf8"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#f8c967"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#e9bc62"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway.controlled_access",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#e98d58"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway.controlled_access",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#db8555"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#806b63"
+            }
+        ]
+    },
+    {
+        "featureType": "transit.line",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#dfd2ae"
+            }
+        ]
+    },
+    {
+        "featureType": "transit.line",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#8f7d77"
+            }
+        ]
+    },
+    {
+        "featureType": "transit.line",
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "color": "#ebe3cd"
+            }
+        ]
+    },
+    {
+        "featureType": "transit.station",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#dfd2ae"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#b9d3c2"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#92998d"
+            }
+        ]
+    }
+]
 
 
 

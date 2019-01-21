@@ -34,7 +34,7 @@ export default class ActivityCard extends React.Component {
                                 </View>
                                 <View style={{flex:1, flexDirection:'column'}}>
                                     <Text style={{fontWeight: '900'}}>{this.props.guideName}</Text>
-                                    <Text style={{fontSize: 11, color:'grey'}}>Joined {this.joined != null ? this.joined.format("MMM YYYY") : ''}</Text>
+                                    <Text style={{fontSize: 11, color:'grey'}}>Joined {this.joined != null ? this.joined.format("MMM, YYYY") : ''}</Text>
                                 </View>
                                 <View style={{flex:1, flexDirection:'column', paddingLeft: 10}}>
                                     <Text style={{fontWeight: '900'}}>Rating</Text>

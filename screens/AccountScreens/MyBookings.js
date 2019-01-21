@@ -40,7 +40,6 @@ export default class MyBookings extends React.Component {
         this.setState({isLoading: true});
         axios.get('/user/bookings')
             .then((resp) => {
-                console.log(resp.data);
                 me.setState({isLoading:false, bookings: resp.data});
             })
             .catch((err) => {
@@ -60,7 +59,7 @@ export default class MyBookings extends React.Component {
                 keyExtractor={(item, index) => 'item' + index}
                 renderItem={({item}) =>
                     <BookedCard id={item.Activity.id} title={item.Activity.title} description={item.Activity.description}
-                                  guideId={item.Activity.Guide.id} activityScore={item.Activity.total_activity_score == null ? 0 : Math.round((item.Activity.total_activity_score / item.Activity.n_activity_score))}
+                                  guideId={item.Activity.Guide.id} activityScore={item.Activity.total_activity_score == null ? 0 : (item.Activity.total_activity_score / item.Activity.n_activity_score).toFixed(1)}
                                   guideName={item.Activity.Guide.User.name} guideJoined={item.Activity.Guide.User.createdAt} navigation={this.props.navigation}
                                   bookingDate={item.Activity_Date.timestamp}
                                   rating = {true} />

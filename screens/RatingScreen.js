@@ -246,6 +246,6 @@ const styles = StyleSheet.create({
 
     ratingText:{
         color: 'white',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-end'
     },
 });

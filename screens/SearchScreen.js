@@ -51,7 +51,6 @@ export default class SearchScreen extends React.Component {
         this.setState({isLoading: true});
         axios.get('/activities')
             .then((resp) => {
-                console.log(resp.data);
                 me.setState({activities: resp.data, isLoading:false});
             })
             .catch((err) => {
@@ -81,7 +80,7 @@ export default class SearchScreen extends React.Component {
                                 keyExtractor={(item, index) => 'item' + index}
                                 renderItem={({item}) =>
                                         <ActivityCard id={item.id} title={item.title} description={item.description}
-                                                      activityScore = {item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score)}
+                                                      activityScore = {item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score).toFixed(1)}
                                                       activityScoreCount = {item.n_activity_score}
                                                       guideName={item.Guide.User.name} guideJoined={item.Guide.User.createdAt} navigation={this.props.navigation}/>
                                 }
