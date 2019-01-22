@@ -8,11 +8,31 @@ export default class BookedCard extends React.Component {
 
     moment = require('moment');
     joined = null;
+    timer = null;
 
     constructor(props){
         super(props);
         if(this.props.guideJoined != null)
             this.joined = this.moment(this.props.guideJoined.replace(/[-:Z]/g, ''));
+        this.state = {
+            end: this.moment(this.props.bookingDate.replace(/[-:Z]/g, '')).subtract(2, 'h'),
+            time: this.moment.duration(this.moment(this.props.bookingDate.replace(/[-:Z]/g, '')).subtract(2, 'h').diff(this.moment(Date.now()))),
+        }
+    }
+
+    componentDidMount() {
+        if(this.props.accepted == null &&
+            (this.moment(Date.now()).isBefore(this.state.end))) {
+            this.timer = setInterval(() => {
+                this.setState({ time: this.moment.duration(this.state.end.diff(this.moment(Date.now()))) });
+                if((this.state.time.valueOf() <= 0))
+                    clearInterval(this.timer);
+            }, 1000);
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
 
     _confirmed() {
@@ -38,7 +58,10 @@ export default class BookedCard extends React.Component {
                     color='orange'
                     style={{ marginRight: 0 }}
                 />
-                <Subheading style={{fontSize:14, color:'orange', marginLeft: 10}}>Pending</Subheading>
+                <View syle={{flex:1, flexDirection:'column'}}>
+                    <Subheading style={{fontSize:14, color:'orange', marginLeft: 10}}>Pending</Subheading>
+                    <Subheading style={{fontSize:14, color:'orange', marginLeft: 10}}>({this.moment(this.state.time.asMilliseconds()).format('HH:mm:ss')})</Subheading>
+                </View>
             </View>
         );
     }
@@ -57,6 +80,23 @@ export default class BookedCard extends React.Component {
         );
     }
 
+    _state(){
+
+        if(this.props.accepted == null
+            && (this.state.time.valueOf() <= 0)){
+            return(
+                this._canceled()
+            );
+        }
+
+        if(this.props.accepted == true)
+            return this._confirmed();
+        else if(this.props.accepted == false)
+            return this._canceled();
+        else
+            return this._pending();
+    }
+
     render() {
         return (
             <View style={{flex:1, flexDirection: 'column', paddingBottom: 30}}>
@@ -71,7 +111,7 @@ export default class BookedCard extends React.Component {
                                     <Title>{this.props.title}</Title>
                                     <Paragraph numberOfLines={2}>{this.props.description}</Paragraph>
                                 </View>
-                                {this._pending()}
+                                {this._state()}
                             </View>
                         </Card.Content>
                         <Divider style={{marginTop: 10, marginBottom: 2}} />
