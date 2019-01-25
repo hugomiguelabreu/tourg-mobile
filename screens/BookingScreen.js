@@ -20,13 +20,16 @@ import ActivityCard from "../components/ActivityCard";
 
 export default class BookingScreen extends React.Component {
 
+    moment = require('moment');
+
     constructor(props){
         super(props);
         this.state={
             selectedStartDate: null,
             activityId: this.props.navigation.getParam('activityId', '0'),
             isLoading: true,
-            activityDetails: null
+            activityDetails: null,
+            activityDate: null
         }
         this.onDateChange = this.onDateChange.bind(this);
     }
@@ -45,10 +48,10 @@ export default class BookingScreen extends React.Component {
     _getDetails(){
         let me = this;
         this.setState({isLoading: true});
-        axios.get('/activities/' + this.state.activityId)
+        axios.get('/activities_dates/' + this.state.activityId)
             .then((resp) => {
                 console.log(resp.data);
-                me.setState({isLoading:false, activityDetails: resp.data});
+                me.setState({isLoading:false, activityDetails: resp.data, activityDate: resp.data.Activity_Dates});
             })
             .catch((err) => {
                 me.setState({isLoading:false, activityDetails: null});
@@ -64,23 +67,29 @@ export default class BookingScreen extends React.Component {
     }
 
     hours = () => {
-        if(this.state.activityDetails == null){
+        let available = this.state.activityDate.filter(act =>
+            this.moment(act.timestamp.replace(/[-:Z]/g, '')).isSame(this.state.selectedStartDate, 'day') && act.bookings == 0
+        );
+
+        if(available.length <= 0){
             return(<View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                 <Text style={{color:'gray'}}>Activity not available on selected date</Text>
             </View>);
         }else{
             return(<FlatList
-                data={this.state.activityDetails.Activity_Dates}
+                data={available}
                 keyExtractor={(item, index) => 'item' + index}
                 renderItem={({item}) =>
                     <BookOption startHour={this.moment(item.timestamp.replace(/[-:Z]/g, '')).format("HH:mm a")}
-                                endHour={this.moment(item.timestamp.replace(/[-:Z]/g, '')).add(2, 'hours').format("HH:mm a")} minimum='2' price='10.50'/>
+                                endHour={this.moment(item.timestamp.replace(/[-:Z]/g, '')).add(this.state.activityDetails.duration, 'minutes').format("HH:mm a")}
+                                minimum={this.state.activityDetails.n_people} price={item.price}
+                                activityId={this.state.activityDetails.id} activityDateId={item.id}
+                                navigation={this.props.navigation}/>
                 }
             />);
         }
     }
 
-    moment = require('moment');
     selectedDate = this.moment().format('YYYY-MM-DD');
 
     static navigationOptions = {
@@ -109,6 +118,7 @@ export default class BookingScreen extends React.Component {
                                         directionalOffsetThreshold: 150
                                     }}
                                     minDate={new Date()}
+                                    maxDate={this.moment(new Date()).add('2', 'months')}
                                     onDateChange={this.onDateChange}/>
                             </View>
                             <Divider/>

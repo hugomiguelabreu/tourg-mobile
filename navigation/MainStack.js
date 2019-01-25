@@ -11,6 +11,7 @@ import RatingScreen from "../screens/RatingScreen";
 import AccountTop from './AccountStack';
 import UserHeader from "../components/UserHeader";
 import ActivityScreen from "../screens/ActivityScreen";
+import PaymentScreen from "../screens/PaymentScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -48,6 +49,7 @@ const SearchStack = createStackNavigator({
     Search: SearchScreen,
     Booking: BookingScreen,
     Activity: ActivityScreen,
+    Payment: PaymentScreen,
     Chat: ChatScreen,
 });
 

@@ -38,20 +38,21 @@ export default class RatingScreen extends React.Component {
             title: this.props.navigation.state.params.activityTitle,
             ratingTotal: this.props.navigation.state.params.activityRating,
             guideId: this.props.navigation.state.params.guideId,
+            bookingId: this.props.navigation.state.params.bookingId,
             errorMessage: '',
             successMessage: '',
             done: false,
         };
     }
 
-    _rate(activityId, guideId, text, ratingActivity, ratingGuide){
-        if(this._rateActivity(activityId, text, ratingActivity) &&
-                this._rateGuide(guideId, ratingGuide)){
+    async _rate(activityId, guideId, text, ratingActivity, booking, ratingGuide){
+        if(await this._rateActivity(activityId, text, ratingActivity, booking) &&
+                await this._rateGuide(guideId, ratingGuide, booking)){
             this.setState({successMessage: "Rating successfully submitted", done: true});
         }
     }
 
-    _rateActivity(id, text, rating){
+    async _rateActivity(id, text, rating, booking){
         let me = this;
         if(text == '') {
             me.setState({errorMessage: 'Please fill the required fields'});
@@ -59,27 +60,28 @@ export default class RatingScreen extends React.Component {
         }
 
         return axios.post('/user/evaluate_activity',
-        {activity_id:id, text: text, score: rating})
+        {activity_id:id, text: text, score: rating, booking_id: booking})
         .then((resp) => {
             return true;
         })
         .catch((err) => {
-            me.setState({ errorMessage: 'Something went wrong.' });
+            me.setState({ errorMessage: 'Something went wrong.', done:false });
+            console.log({activity_id:id, text: text, score: rating, booking_id: booking});
             console.log(err);
             return false;
         });
     }
 
-    _rateGuide(id, rating){
+    async _rateGuide(id, rating, booking){
         let me = this;
 
         return axios.post('/user/evaluate_guide',
-        {guide_id:id, text: '', score: rating})
+        {guide_id:id, text: '', score: rating, booking_id: booking})
         .then((resp) => {
             return true;
         })
         .catch((err) => {
-            me.setState({ errorMessage: 'Something went wrong.' });
+            me.setState({ errorMessage: 'Something went wrong.', done:false });
             console.log(err);
             return false;
         });
@@ -154,7 +156,7 @@ export default class RatingScreen extends React.Component {
                                 <TouchableOpacity
                                     disabled={this.state.done}
                                     style={styles.button}
-                                    onPress={() => {this._rate(this.state.activityId, this.state.guideId, this.state.textRating, this.state.rating, this.state.guideRating)}}>
+                                    onPress={() => {this._rate(this.state.activityId, this.state.guideId, this.state.textRating, this.state.rating, this.state.bookingId, this.state.guideRating)}}>
                                     <Button mode="contained"
                                             disabled={this.state.done}
                                             style={styles.buttonLogin}>

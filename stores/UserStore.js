@@ -24,6 +24,7 @@ class User {
         this.bio = data.user.bio;
         this.createdAt = data.user.createdAt;
         this.photo_path = data.user.photo_path;
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + userStore.token;
     }
 
     @action updateUser(data){

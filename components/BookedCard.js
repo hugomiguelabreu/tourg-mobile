@@ -15,6 +15,8 @@ export default class BookedCard extends React.Component {
         if(this.props.guideJoined != null)
             this.joined = this.moment(this.props.guideJoined.replace(/[-:Z]/g, ''));
         this.state = {
+            bookingId: this.props.id,
+            accepted: this.props.accepted,
             end: this.moment(this.props.bookingDate.replace(/[-:Z]/g, '')).subtract(2, 'h'),
             time: this.moment.duration(this.moment(this.props.bookingDate.replace(/[-:Z]/g, '')).subtract(2, 'h').diff(this.moment(Date.now()))),
         }
@@ -45,6 +47,20 @@ export default class BookedCard extends React.Component {
                     style={{ marginRight: 0 }}
                 />
                 <Subheading style={{fontSize:14, color:'green', marginLeft: 10}}>Confirmed</Subheading>
+            </View>
+        );
+    }
+
+    _done() {
+        return(
+            <View style={{flex:0.9, flexDirection:'row', justifyContent:'flex-start', alignItems: 'center'}}>
+                <Icon.Ionicons
+                    name='md-happy'
+                    size={16}
+                    color='green'
+                    style={{ marginRight: 0 }}
+                />
+                <Subheading style={{fontSize:14, color:'green', marginLeft: 5}}>Done</Subheading>
             </View>
         );
     }
@@ -82,16 +98,18 @@ export default class BookedCard extends React.Component {
 
     _state(){
 
-        if(this.props.accepted == null
+        if(this.state.accepted == null
             && (this.state.time.valueOf() <= 0)){
             return(
                 this._canceled()
             );
         }
 
-        if(this.props.accepted == true)
+        if(this.state.accepted == true && !(this.moment(Date.now()).isBefore(this.state.end)))
+            return this._done();
+        else if(this.state.accepted == true)
             return this._confirmed();
-        else if(this.props.accepted == false)
+        else if(this.state.accepted == false)
             return this._canceled();
         else
             return this._pending();
@@ -101,8 +119,11 @@ export default class BookedCard extends React.Component {
         return (
             <View style={{flex:1, flexDirection: 'column', paddingBottom: 30}}>
                 <TouchableNativeFeedback
-                    onPress={() => {this.props.navigation.navigate('Rating', {activityId: this.props.id, guideId: this.props.guideId, activityTitle: this.props.title,
-                        activityRating:this.props.activityScore})}}>
+                    onPress={() => {
+                        if(this.props.activity_review == null && this.props.guide_review == null)
+                        this.props.navigation.navigate('Rating', {activityId: this.props.activityId, guideId: this.props.guideId, activityTitle: this.props.title,
+                        activityRating:this.props.activityScore, bookingId: this.props.id})}
+                    }>
                     <Card style={{flex:1}}>
                         <Card.Cover style={{height:120}} source={{ uri: 'https://picsum.photos/500/?random' }} />
                         <Card.Content style={{flex:1, paddingTop: 5}}>

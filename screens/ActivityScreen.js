@@ -24,6 +24,7 @@ export default class ActivityScreen extends React.Component {
             total_activity_score: null,
             n_activity_score: 0,
             region:null,
+            durationMin: '',
             guideName: '',
             guideBio: '',
             guideTotalScore: null,
@@ -67,6 +68,7 @@ export default class ActivityScreen extends React.Component {
                     total_activity_score: resp.data.total_activity_score,
                     n_activity_score: resp.data.n_activity_score,
                     region:{latitude:resp.data.lat, longitude:resp.data.lng, latitudeDelta: 0.0122, longitudeDelta: 0.0021},
+                    durationMin: resp.data.duration,
                     guideName: resp.data.Guide.User.name,
                     guideBio: resp.data.Guide.User.bio,
                     guideTotalScore: resp.data.Guide.total_guide_score,
@@ -156,8 +158,7 @@ export default class ActivityScreen extends React.Component {
                                         size={14}
                                         style={{alignSelf: 'flex-start', margin: 0}}
                                     />
-                                    <Text style={{marginLeft: 5}}>5 hours
-                                        and 30 minutes</Text>
+                                    <Text style={{marginLeft: 5}}>{this.moment.duration(this.state.durationMin, 'minutes').humanize()}</Text>
                                 </View>
                                 <View style={styles.quickInfoLine}>
                                     <Icon.Ionicons

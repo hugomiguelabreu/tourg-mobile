@@ -6,6 +6,7 @@ import AppNavigator from './navigation/AppNavigator';
 import { Constants } from 'expo';
 import axios from 'axios';
 import userStore from "./stores/UserStore";
+import stripe from 'tipsi-stripe';
 
 export default class App extends React.Component {
   state = {
@@ -48,7 +49,7 @@ export default class App extends React.Component {
       axios.defaults.baseURL = 'http://188.166.173.44/api/';
       axios.defaults.headers.common['Authorization'] = '';
       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-  }
+  };
 
   _loadResourcesAsync = async () => {
     return Promise.all([
