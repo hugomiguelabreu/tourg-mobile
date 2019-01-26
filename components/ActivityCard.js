@@ -50,7 +50,7 @@ export default class ActivityCard extends React.Component {
                                 </View>
                                 <View style={{flex:1, flexDirection:'column'}}>
                                     <Text style={{fontWeight: '900'}}>Price</Text>
-                                    <Text style={{fontSize: 11, color:'grey'}}>65€ per person</Text>
+                                    <Text style={{fontSize: 11, color:'grey'}}>{this.props.price}€ per person</Text>
                                 </View>
                             </View>
                         </Card.Actions>

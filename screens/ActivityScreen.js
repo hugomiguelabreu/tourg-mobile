@@ -25,6 +25,9 @@ export default class ActivityScreen extends React.Component {
             n_activity_score: 0,
             region:null,
             durationMin: '',
+            price: 0,
+            max: 0,
+            min: 0,
             guideName: '',
             guideBio: '',
             guideTotalScore: null,
@@ -70,6 +73,9 @@ export default class ActivityScreen extends React.Component {
                     region:{latitude:resp.data.lat, longitude:resp.data.lng, latitudeDelta: 0.0122, longitudeDelta: 0.0021},
                     durationMin: resp.data.duration,
                     guideName: resp.data.Guide.User.name,
+                    min: resp.data.min_people,
+                    max: resp.data.n_people,
+                    price: resp.data.price,
                     guideBio: resp.data.Guide.User.bio,
                     guideTotalScore: resp.data.Guide.total_guide_score,
                     guideNScore: resp.data.Guide.n_guide_score,
@@ -117,7 +123,7 @@ export default class ActivityScreen extends React.Component {
                                     alignItems: 'center',
                                     justifyContent: 'space-around'
                                 }}>
-                                    <Text>45€ per person</Text>
+                                    <Text>{this.state.price}€ per person</Text>
                                 </View>
                                 <TouchableNativeFeedback
                                     onPress={() => {this.props.navigation.navigate('Booking', {activityId: this.state.activity_id})}
@@ -141,7 +147,7 @@ export default class ActivityScreen extends React.Component {
                                         size={14}
                                         style={{alignSelf: 'flex-start', margin: 0}}
                                     />
-                                    <Text style={{marginLeft: 5}}>{this.state.city}, Portugal</Text>
+                                    <Text style={{marginLeft: 5}}>{this.state.city}</Text>
                                 </View>
                                 <View style={styles.quickInfoLine}>
                                     <Icon.Ionicons
@@ -150,7 +156,7 @@ export default class ActivityScreen extends React.Component {
                                         style={{alignSelf: 'flex-start', margin: 0}}
                                     />
                                     <Text
-                                        style={{marginLeft: 5}}>Between 2 and 4 people</Text>
+                                        style={{marginLeft: 5}}>Between {this.state.min} and {this.state.max} people</Text>
                                 </View>
                                 <View style={styles.quickInfoLine}>
                                     <Icon.Ionicons

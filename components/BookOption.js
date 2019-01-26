@@ -16,7 +16,8 @@ export default class BookOption extends React.Component {
                         <View style={{flex:1, flexDirection:'row', justifyContent: 'space-between', alignItems: 'center'}}>
                             <View style={{flex:2, flexDirection:'column'}}>
                                 <Text style={{fontWeight: '900'}}>{this.props.startHour} - {this.props.endHour}</Text>
-                                <Text style={{fontSize: 11, color:'grey'}}>{this.props.price}€ per person | Min: <Text style={{fontWeight: '800'}}>{this.props.minimum}</Text> people required</Text>
+                                <Text style={{fontSize: 11, color:'grey'}}>{this.props.price}€ per person | Min: <Text style={{fontWeight: '800'}}>{this.props.minimum}</Text>
+                                    {this.props.minimum == 1 ? ' person' : ' people'} required</Text>
                             </View>
                             <View style={{flex:1, flexDirection:'row'}}>
                                 <View style={{flex:0.1}}>
