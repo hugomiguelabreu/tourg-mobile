@@ -17,6 +17,7 @@ export default class BookedCard extends React.Component {
         this.state = {
             bookingId: this.props.id,
             accepted: this.props.accepted,
+            finished: this.props.finished,
             end: this.moment(this.props.bookingDate.replace(/[-:Z]/g, '')).subtract(2, 'h'),
             time: this.moment.duration(this.moment(this.props.bookingDate.replace(/[-:Z]/g, '')).subtract(2, 'h').diff(this.moment(Date.now()))),
         }
@@ -96,6 +97,41 @@ export default class BookedCard extends React.Component {
         );
     }
 
+    _action() {
+        if(this.state.accepted == true && this.state.finished == false
+                && (this.moment(Date.now()).isBefore(this.moment(this.state.end).add(this.props.duration+60, 'm')))) {
+            return (
+                <Card.Actions>
+                    <View style={{
+                        flex: 1,
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                        alignItems: 'center'
+                    }}>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'space-around',
+                            alignItems: 'center'
+                        }}>
+                            <View style={{flex: 1, padding: 5}}>
+                                <TouchableNativeFeedback onPress={() => {
+                                    this.props.navigation.navigate('Map', {
+                                        bookingId: this.props.id,
+                                        activityId: this.props.activityId, activityDateId: this.props.activityDateId
+                                    })
+                                }}>
+                                    <Button mode='contained' style={{backgroundColor: 'orange'}}
+                                            title='Start'>Meet guide</Button>
+                                </TouchableNativeFeedback>
+                            </View>
+                        </View>
+                    </View>
+                </Card.Actions>
+            );
+        }
+    }
+
     _state(){
 
         if(this.state.accepted == null
@@ -105,8 +141,10 @@ export default class BookedCard extends React.Component {
             );
         }
 
-        if(this.state.accepted == true && !(this.moment(Date.now()).isBefore(this.state.end)))
+        if(this.state.finished == true)
             return this._done();
+        else if(this.state.finished == false && !(this.moment(Date.now()).isBefore(this.moment(this.state.end).add(this.props.duration+60, 'm'))))
+            return this._canceled();
         else if(this.state.accepted == true)
             return this._confirmed();
         else if(this.state.accepted == false)
@@ -120,10 +158,10 @@ export default class BookedCard extends React.Component {
             <View style={{flex:1, flexDirection: 'column', paddingBottom: 30}}>
                 <TouchableNativeFeedback
                     onPress={() => {
-                        if(this.props.activity_review == null && this.props.guide_review == null)
-                        this.props.navigation.navigate('Rating', {activityId: this.props.activityId, guideId: this.props.guideId, activityTitle: this.props.title,
-                        activityRating:this.props.activityScore, bookingId: this.props.id})}
-                    }>
+                        if(this.props.activity_review == null && this.props.guide_review == null && this.state.finished == true)
+                            this.props.navigation.navigate('Rating', {activityId: this.props.activityId, guideId: this.props.guideId, activityTitle: this.props.title,
+                                                                        activityRating:this.props.activityScore, bookingId: this.props.id})
+                    }}>
                     <Card style={{flex:1}}>
                         <Card.Cover style={{height:120}} source={{ uri: 'https://picsum.photos/500/?random' }} />
                         <Card.Content style={{flex:1, paddingTop: 5}}>
@@ -171,6 +209,7 @@ export default class BookedCard extends React.Component {
                                 </View>
                             </View>
                         </Card.Actions>
+                        {this._action()}
                     </Card>
                 </TouchableNativeFeedback>
             </View>

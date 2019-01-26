@@ -12,6 +12,7 @@ import AccountTop from './AccountStack';
 import UserHeader from "../components/UserHeader";
 import ActivityScreen from "../screens/ActivityScreen";
 import PaymentScreen from "../screens/PaymentScreen";
+import MapTrackScreen from "../screens/MapTrackScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -89,6 +90,7 @@ const AccountStack = createStackNavigator({
         })
     },
     Rating: RatingScreen,
+    Map: MapTrackScreen,
 });
 
 AccountStack.navigationOptions = {
