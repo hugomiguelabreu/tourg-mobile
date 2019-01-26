@@ -215,12 +215,18 @@ export default class SearchScreen extends React.Component {
                             <FlatList
                                 data={this.state.activities}
                                 keyExtractor={(item, index) => 'item' + index}
-                                renderItem={({item}) =>
-                                        <ActivityCard id={item.id} title={item.title} description={item.description}
-                                                      activityScore = {item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score).toFixed(1)}
-                                                      activityScoreCount = {item.n_activity_score}
-                                                      price = {item.price}
-                                                      guideName={item.Guide.User.name} guideJoined={item.Guide.User.createdAt} navigation={this.props.navigation}/>
+                                extraData={this.state}
+                                renderItem={({item}) => {
+                                    if(this.state.selectedCategories[this.categories[item.category_id-1]]) {
+                                        return(<ActivityCard id={item.id} title={item.title} description={item.description}
+                                                      activityScore={item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score).toFixed(1)}
+                                                      activityScoreCount={item.n_activity_score}
+                                                      price={item.price}
+                                                      guideName={item.Guide.User.name}
+                                                      guideJoined={item.Guide.User.createdAt}
+                                                      navigation={this.props.navigation}/>);
+                                    }
+                                }
                                 }
                             />
                         </View>

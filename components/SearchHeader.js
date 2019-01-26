@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import {Title, Searchbar} from "react-native-paper";
 import Colors from "../constants/Colors";
 import {Icon} from "expo";
@@ -34,14 +34,16 @@ export default class SearchHeader extends React.Component {
 
     _getCity(){
         let me = this;
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.lat + ',' + this.state.lng + '&key=AIzaSyA4Bctc88WtGRmd_dOOMoF26XllgIyBhPc')
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.lat + ',' + this.state.lng + '&key=AIzaSyCfbOF4tlJfhEY8ic0U2cdVGSUH3kQSwuc')
             .then((resp) => {
+                console.log(resp.data);
                 me.setState({query: resp.data.results[0].address_components[1].long_name, city: resp.data.results[0].address_components[1].long_name,
                                 country: resp.data.results[0].address_components[3].long_name});
                 this.querySearch(me.state.query);
             })
             .catch((err) => {
                 console.log(err);
+                Alert.alert('Error while getting location', 'An error occurred getting the location')
             });
     }
 
