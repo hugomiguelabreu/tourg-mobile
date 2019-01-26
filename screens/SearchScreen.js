@@ -10,7 +10,7 @@ import {
     FlatList, Modal
 } from 'react-native';
 import {MonoText} from "../components/StyledText";
-import {Button, Chip, Divider} from "react-native-paper";
+import {Button, Chip, Divider, Portal, Dialog, Checkbox, Title, Subheading} from "react-native-paper";
 import SearchHeader from "../components/SearchHeader";
 import ActivityCard from "../components/ActivityCard";
 import axios from 'axios';
@@ -31,9 +31,43 @@ export default class SearchScreen extends React.Component {
             isDateTimePickerVisibleEnd: false,
             dateStart: null,
             dateEnd: null,
+            lat: null,
+            lng: null,
             query: '',
-        }
+            showCategories: false,
+            selectedCategories: {
+                'Food and Drink': false,
+                'Concerts': false,
+                'Nature': false,
+                'Arts': false,
+                'Surfing': false,
+                'History': false,
+                'Sports' : false,
+                'Classes and Workshops': false,
+                'Entertainment': false,
+                'Music': false,
+                'Nightlife': false,
+                'Health and Wellness': false,
+                'Social Impact': false,
+            },
+        };
     }
+
+    categories = [
+        'Food and Drink',
+        'Concerts',
+        'Nature',
+        'Arts',
+        'Surfing',
+        'History',
+        'Sports',
+        'Classes and Workshops',
+        'Entertainment',
+        'Music',
+        'Nightlife',
+        'Health and Wellness',
+        'Social Impact',
+    ];
 
     static navigationOptions = ({navigation}) => ({
         headerTitle: <SearchHeader onClick={navigation.getParam('getLocation')} handleQuery={navigation.getParam('query')}/>,
@@ -44,7 +78,6 @@ export default class SearchScreen extends React.Component {
 
     componentDidMount() {
         // Set navigation param to execute function on header button
-        this.props.navigation.setParams({ getLocation: this._getLocation });
         this.props.navigation.setParams({ query: this.handleChangeQuery });
         // When the screen is focused again let's fetch new results
         this.props.navigation.addListener(
@@ -116,28 +149,64 @@ export default class SearchScreen extends React.Component {
         }
     }
 
-    //Function to get user location using gps
-    _getLocation = () => {
-        console.log("kek");
-        navigator.geolocation.getCurrentPosition(position => {
-                const location = JSON.stringify(position);
-                console.log(location);
-            },
-            error => Alert.alert('Error while getting location', error.message),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+    _categories(){
+        return(
+            <FlatList
+                data={this.categories}
+                keyExtractor={(item, index) => 'item' + index}
+                extraData={this.state}
+                renderItem={({item}) =>
+                    <View style={{flex:1, flexDirection:'row', alignItems:'center'}}>
+                        <Checkbox
+                            status={this.state.selectedCategories[item] ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                this.state.selectedCategories[item] = !this.state.selectedCategories[item];
+                                this.setState({ selectedCategories: this.state.selectedCategories  });
+                            }}
+                        />
+                        <Subheading>{item}</Subheading>
+                    </View>
+                }
+            />
+        );
     }
+
+    _hideDialog = () => {
+        this.setState({showCategories: false});
+    };
+
+    _showDialog = () => {
+        this.setState({showCategories: true});
+    };
 
     render() {
         if(!this.state.isLoading) {
             return (
                 <View style={styles.container}>
+                    <Portal>
+                        <Dialog
+                            visible={this.state.showCategories}
+                            onDismiss={this._hideDialog}>
+                            <Dialog.Title style={{fontSize:16, marginTop:10, marginBottom: 10}}>Categories</Dialog.Title>
+                            <Dialog.ScrollArea>
+                                <ScrollView style={{height: 400}} contentContainerStyle={{flexGrow:1, paddingHorizontal: 24}}>
+                                    <View style={{flex:1}}>
+                                        {this._categories()}
+                                    </View>
+                                </ScrollView>
+                            </Dialog.ScrollArea>
+                            <Dialog.Actions>
+                                <Button onPress={this._hideDialog}>Done</Button>
+                            </Dialog.Actions>
+                        </Dialog>
+                    </Portal>
                     <View style={{flex:0.1, flexDirection:'column', padding:5}}>
                         <View style={{flex:1, flexDirection:'row', justifyContent:'space-between', alignItems:'center', paddingLeft: 10, paddingRight: 10}}>
                             <Chip icon={() => {return(<Icon.Ionicons name='md-calendar' size={16} color='grey'/>);}} mode='outlined'
                                   onPress={() => this._showDateTimePickerStart()}>{this.state.dateStart == null ? 'Start date' : this.moment(this.state.dateStart).format('DD MMM YY')}</Chip>
                             <Chip icon={() => {return(<Icon.Ionicons name='md-calendar' size={16} color='grey'/>);}} mode='outlined'
                                   onPress={() => this._showDateTimePickerEnd()}>{this.state.dateEnd == null ? 'End date' : this.moment(this.state.dateEnd).format('DD MMM YY')}</Chip>
-                            <Chip icon={() => {return(<Icon.Ionicons name='md-calendar' size={16} color='grey'/>);}} mode='outlined' onPress={() => console.log('Pressed')}>Categories</Chip>
+                            <Chip icon={() => {return(<Icon.Ionicons name='md-menu' size={16} color='grey'/>);}} mode='outlined' onPress={() => this._showDialog()}>Categories</Chip>
                         </View>
                     </View>
                     <Divider style={{elevation: 0.5}}/>
