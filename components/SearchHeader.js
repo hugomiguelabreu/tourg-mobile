@@ -8,7 +8,27 @@ export default class SearchHeader extends React.Component {
 
     constructor(props){
         super(props);
+        this.state = {
+            query: '',
+            typing: false,
+            typingTimeout: 0
+        }
     }
+
+    querySearch = (query) => {
+        const self = this;
+        if (this.state.typingTimeout) {
+            clearTimeout(this.state.typingTimeout);
+        }
+        this.setState({
+            query: query,
+            typing: false,
+            typingTimeout: setTimeout(function () {
+                self.props.handleQuery(query);
+            }, 500)
+        });
+    }
+
 
     render() {
         return (
@@ -20,6 +40,7 @@ export default class SearchHeader extends React.Component {
                     <TouchableOpacity style={{flex:4}}>
                         <Searchbar
                             style={{border:0, elevation: 0, flex:1}}
+                            onChangeText={query => { this.querySearch(query) }}
                             placeholder="Search a city..."
                         />
                     </TouchableOpacity>
@@ -30,8 +51,8 @@ export default class SearchHeader extends React.Component {
                         <TouchableOpacity style={{flex:2, flexDirection:'row', justifyContent:'space-around', alignItems:'stretch'}}
                             onPress={this.props.onClick}>
                             <View style={{flex:2, flexDirection:'column', justifyContent: 'center'}}>
-                                <Text>Braga,</Text>
-                                <Text>Portugal</Text>
+                                <Text>GPS</Text>
+                                <Text>Location</Text>
                             </View>
                             <View style={{flex:1}}>
                                 <Icon.Ionicons

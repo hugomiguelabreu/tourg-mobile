@@ -56,15 +56,15 @@ export default class PaymentScreen extends React.Component {
             return(
                 <List.Section title="Card">
                     <List.Item
-                        title={"**** **** **** " + this.state.token.last4}
-                        description={this.state.token.name != null ? this.state.token.name : ''}
-                        left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name={'cc-' + this.state.token.brand} size={24} /> } />}
+                        title={"**** **** **** " + this.state.token.card.last4}
+                        description={this.state.token.card.name != null ? this.state.token.card.name : ''}
+                        left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name={'cc-' + this.state.token.card.brand.toLowerCase()} size={24} /> } />}
                         onPress = {() => {console.log('ola')}}
                     />
                 </List.Section>
             );
         }
-    }
+    };
 
     static navigationOptions = {
       headerTitle: <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>PAYMENT</Title></View>,
@@ -113,7 +113,7 @@ export default class PaymentScreen extends React.Component {
                                 <Text style={styles.instruction}>
                                     Token: {JSON.stringify(this.state.token)}
                                 </Text>
-                                {this._getCard}
+                                {this._getCard()}
                             </View>
                         </View>
 
