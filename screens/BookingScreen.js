@@ -84,6 +84,7 @@ export default class BookingScreen extends React.Component {
                                 endHour={this.moment(item.timestamp.replace(/[-:Z]/g, '')).add(this.state.activityDetails.duration, 'minutes').format("HH:mm a")}
                                 minimum={this.state.activityDetails.min_people} price={item.price}
                                 activityId={this.state.activityDetails.id} activityDateId={item.id}
+                                date={this.state.selectedStartDate}
                                 navigation={this.props.navigation}/>
                 }
             />);

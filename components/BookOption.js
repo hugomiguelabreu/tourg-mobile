@@ -24,7 +24,9 @@ export default class BookOption extends React.Component {
                                     <Title style={{color:'grey'}}>|</Title>
                                 </View>
                                 <View style={{flex:1}}>
-                                    <Button title='Book' onPress={() => {this.props.navigation.navigate('Payment', {activityId: this.props.activityId, activityDateId: this.props.activityDateId})}}>
+                                    <Button title='Book' onPress={() => {this.props.navigation.navigate('Payment', {activityId: this.props.activityId,
+                                        activityDateId: this.props.activityDateId,
+                                        activityDateDetails: this.props})}}>
                                         Book
                                     </Button>
                                 </View>
