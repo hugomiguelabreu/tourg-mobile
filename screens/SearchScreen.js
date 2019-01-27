@@ -217,7 +217,8 @@ export default class SearchScreen extends React.Component {
                                 keyExtractor={(item, index) => 'item' + index}
                                 extraData={this.state}
                                 renderItem={({item}) => {
-                                    if(this.state.selectedCategories[this.categories[item.category_id-1]]) {
+                                    if(Object.values(this.state.selectedCategories).every(v => v === false)
+                                            || this.state.selectedCategories[this.categories[item.category_id-1]]) {
                                         return(<ActivityCard id={item.id} title={item.title} description={item.description}
                                                       activityScore={item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score).toFixed(1)}
                                                       activityScoreCount={item.n_activity_score}
