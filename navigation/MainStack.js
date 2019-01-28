@@ -13,6 +13,7 @@ import UserHeader from "../components/UserHeader";
 import ActivityScreen from "../screens/ActivityScreen";
 import PaymentScreen from "../screens/PaymentScreen";
 import MapTrackScreen from "../screens/MapTrackScreen";
+import ChatRooms from "../screens/ChatRooms";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -51,8 +52,8 @@ const SearchStack = createStackNavigator({
     Booking: BookingScreen,
     Activity: ActivityScreen,
     Payment: PaymentScreen,
-    Chat: ChatScreen,
 });
+//Chat: ChatScreen,
 
 SearchStack.navigationOptions = {
     tabBarLabel: 'Search',
@@ -65,7 +66,7 @@ SearchStack.navigationOptions = {
 };
 
 const BookingsStack = createStackNavigator({
-  Chat: MapScreen,
+  Rooms: ChatRooms,
 });
 
 BookingsStack.navigationOptions = {
@@ -107,6 +108,5 @@ export default createBottomTabNavigator({
     HomeStack,
     MapStack,
     SearchStack,
-    BookingsStack,
     AccountStack,
 });
