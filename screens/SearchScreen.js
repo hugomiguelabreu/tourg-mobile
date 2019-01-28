@@ -10,7 +10,7 @@ import {
     FlatList, Modal
 } from 'react-native';
 import {MonoText} from "../components/StyledText";
-import {Button, Chip, Divider, Portal, Dialog, Checkbox, Title, Subheading} from "react-native-paper";
+import {Button, Chip, Divider, Portal, Dialog, Checkbox, Title, Paragraph, Subheading} from "react-native-paper";
 import SearchHeader from "../components/SearchHeader";
 import ActivityCard from "../components/ActivityCard";
 import axios from 'axios';
@@ -26,7 +26,7 @@ export default class SearchScreen extends React.Component {
         super(props);
         this.state = {
             activities: null,
-            isLoading: true,
+            isLoading: false,
             isDateTimePickerVisibleStart: false,
             isDateTimePickerVisibleEnd: false,
             dateStart: null,
@@ -83,7 +83,6 @@ export default class SearchScreen extends React.Component {
         this.props.navigation.addListener(
             'willFocus',
             payload => {
-                this._getActivities();
             }
         );
     }
@@ -179,6 +178,39 @@ export default class SearchScreen extends React.Component {
         this.setState({showCategories: true});
     };
 
+    _help() {
+        if(this.state.activities == null || this.state.activities.length <= 0){
+            return(
+                <View>
+                    <View style={{flexDirection: 'column', justifyContent:'space-between',
+                        alignItems:'center'}}>
+                        <Title style={{color:'grey'}}>Search activities and tours</Title>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent:'space-between'}}>
+                        <View style={{flex:1, flexDirection: 'column', justifyContent:'flex-start',
+                            alignItems:'flex-start', marginTop:5, marginLeft:25}}>
+                            <Icon.Ionicons
+                                name='md-arrow-round-up'
+                                size={24}
+                                color='grey'
+                            />
+                            <Subheading style={{color:'grey'}}>Search for you city</Subheading>
+                        </View>
+                        <View style={{flexDirection: 'column', justifyContent:'flex-start',
+                            alignItems:'flex-end', marginTop:35, marginRight:20}}>
+                            <Icon.Ionicons
+                                name='md-arrow-round-up'
+                                size={24}
+                                color='grey'
+                            />
+                            <Subheading style={{color:'grey'}}>Get a precise location</Subheading>
+                        </View>
+                    </View>
+                </View>
+            );
+        }
+    }
+
     render() {
         if(!this.state.isLoading) {
             return (
@@ -212,6 +244,7 @@ export default class SearchScreen extends React.Component {
                     <Divider style={{elevation: 0.5}}/>
                     <ScrollView style={[styles.container, {paddingTop:5}]} contentContainerStyle={{flexGrow:1}}>
                         <View style={styles.list}>
+                            {this._help()}
                             <FlatList
                                 data={this.state.activities}
                                 keyExtractor={(item, index) => 'item' + index}

@@ -50,6 +50,8 @@ export default class PaymentScreen extends React.Component {
             guideNScore: 0,
             guideJoined: null,
             totalPeople:0,
+            cards: [],
+            saveCard: false,
         }
     }
 
@@ -60,6 +62,7 @@ export default class PaymentScreen extends React.Component {
             'willFocus',
             payload => {
                 this._getDetails();
+                this._getCards();
             }
         );
     }
@@ -72,7 +75,6 @@ export default class PaymentScreen extends React.Component {
         this.setState({isLoading: true});
         axios.get('/activities/' + this.state.activityId)
             .then((resp) => {
-                console.log(resp.data);
                 me.setState({
                     title: resp.data.title,
                     city: resp.data.city,
@@ -108,48 +110,85 @@ export default class PaymentScreen extends React.Component {
             ], { cancelable: false });
     }
 
+    _getCards(){
+        let me = this;
+        this.setState({isLoading: true});
+        axios.get('/user/credit_cards')
+            .then((resp) => {
+                me.setState({isLoading:false, cards: resp.data});
+            })
+            .catch((err) => {
+                me.setState({isLoading:false, cards: []});
+                console.log(err);
+            });
+    }
+
+    _cards = (state) => {
+        if(this.state.cards.length <= 0){
+            return(<List.Item
+                title=""
+                description="No cards saved to your account"
+                onPress = {() => {console.log('ola')}}
+            />);
+        }else{
+            return(
+                <List.Section title="My saved cards" style={{paddingLeft:15, marginTop: -15}}>
+                    <FlatList
+                        data={this.state.cards}
+                        keyExtractor={(item, index) => 'item' + index}
+                        extraData={this.state}
+                        renderItem={({item}) =>
+                        <List.Item
+                            title={"**** **** **** " + item.last_four}
+                            description=""
+                            style={{padding:0, paddingLeft: 20}}
+                            left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name={'cc-' + item.type.toLowerCase()} size={24} /> } />}
+                            onPress = {() => {this.setState({
+                                token:{
+                                    tokenId: item.token,
+                                    created: null,
+                                    card:{
+                                        last4:item.last_four,
+                                        brand:item.type,
+                                        name: null,
+                                    }
+                                }, saveCard: false
+                            }); setTimeout(() => {this.refs.scroll.scrollToEnd()}, 500);}}
+                    />
+                }/>
+                </List.Section>
+            );
+        }
+    };
+
     _getCard = () => {
         if(this.state.token != null){
             return(
                 <View>
+                    <View style={styles.section}>
+                        <Title style={styles.sectionTitle}>Selected payment method</Title>
+                    </View>
+                    <View style={{justifyContent: 'space-around', paddingLeft: 20}}>
                     <List.Item
                         title={"**** **** **** " + this.state.token.card.last4}
                         description={this.state.token.card.name != null ? this.state.token.card.name : ''}
-                        left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name={'cc-' + this.state.token.card.brand.toLowerCase()} size={32} /> } />}
+                        left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name={'cc-' + this.state.token.card.brand.toLowerCase()} size={24} /> } />}
                         onPress = {() => {this.removeCard()}}
                         style={{paddingLeft: 15, paddingBottom:0, paddingTop: 0}}
                     />
                     <View style={{flex:1, flexDirection:'column', alignItems:'center'}}>
                         <View style={{flex:1, flexDirection:'row', alignItems:'center'}}>
                             <Checkbox
-                                status={true ? 'checked' : 'unchecked'}
+                                status={this.state.saveCard ? 'checked' : 'unchecked'}
+                                disabled={this.state.token.created == null}
                                 onPress={() => {
+                                    this.setState({saveCard: !this.state.saveCard})
                                 }}
                             />
                             <Paragraph>Save my card</Paragraph>
                         </View>
                     </View>
-                </View>
-            );
-        }else{
-            return(
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-around'
-                }}>
-                    <TouchableNativeFeedback
-                        onPress={() => {this.handleCardPayPress()}
-                        }>
-                    <Button mode="contained" style={{padding: 5}}>
-                        Add a card &nbsp;
-                        <Icon.FontAwesome
-                            name={'credit-card'}
-                            size={16}
-                        />
-                    </Button>
-                    </TouchableNativeFeedback>
+                    </View>
                 </View>
             );
         }
@@ -164,32 +203,24 @@ export default class PaymentScreen extends React.Component {
         const options = {
             requiredBillingAddressFields: 'full',
             prefilledInformation: {
-                billingAddress: {
-                    name: 'Gunilla Haugeh',
-                    line1: 'Canary Place',
-                    line2: '3',
-                    city: 'Macon',
-                    state: 'Georgia',
-                    country: 'US',
-                    postalCode: '31217',
-                },
             },
         };
 
         const token = await Stripe.paymentRequestWithCardFormAsync(options);
-        this.setState({token: token});
+        this.setState({token: token, saveCard: true});
+        console.log(token);
+        setTimeout(() => {this.refs.scroll.scrollToEnd()}, 500);
     }
 
     _updatePeople = (value) => {
         this.setState({totalPeople: value});
-        console.log(this.state.totalPeople);
     };
 
     render() {
         if(!this.state.isLoading) {
             return (
                 <View style={styles.container}>
-                    <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1}}>
+                    <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1}} ref='scroll'>
                         <View style={styles.container}>
                             <View style={{flexDirection: 'column', paddingBottom: 20}}>
                                 <Card style={{flexDirection: 'column'}}>
@@ -264,6 +295,26 @@ export default class PaymentScreen extends React.Component {
                                 <Title style={styles.sectionTitle}>Payment method</Title>
                             </View>
                             <View style={{justifyContent: 'space-around'}}>
+                                {this._cards()}
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-around',
+                                    marginBottom: 10
+                                }}>
+                                    <TouchableNativeFeedback
+                                        onPress={() => {this.handleCardPayPress()}
+                                        }>
+                                        <Button mode="contained" style={{padding: 5}}>
+                                            Add a card &nbsp;
+                                            <Icon.FontAwesome
+                                                name={'credit-card'}
+                                                size={16}
+                                            />
+                                        </Button>
+                                    </TouchableNativeFeedback>
+                                </View>
                                 {this._getCard()}
                             </View>
                         </View>
