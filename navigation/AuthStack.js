@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LoginScreen from "../screens/LoginScreen";
+import ActivityScreen from "../screens/ActivityScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -27,6 +28,7 @@ HomeStack.navigationOptions = {
 
 const SearchStack = createStackNavigator({
   Search: SearchScreen,
+  Activity: ActivityScreen,
 });
 
 SearchStack.navigationOptions = {

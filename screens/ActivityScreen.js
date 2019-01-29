@@ -1,11 +1,12 @@
 import React from 'react';
 import {View, Text, Image, ScrollView, StyleSheet, Dimensions, TouchableNativeFeedback, TouchableOpacity} from "react-native";
-import {Button, Card, Paragraph, Title} from "react-native-paper";
+import {Button, Card, Paragraph, Title, HelperText} from "react-native-paper";
 import {Icon} from "expo";
 import Timeline from "react-native-timeline-listview";
 import MapViewAnimated, {PROVIDER_GOOGLE, Circle, Marker} from "react-native-maps";
 import LoadingModal from "../components/LoadingModal";
 import axios from "axios";
+import userStore from '../stores/UserStore';
 
 
 export default class ActivityScreen extends React.Component {
@@ -143,12 +144,18 @@ export default class ActivityScreen extends React.Component {
                                     flex: 1,
                                     flexDirection: 'row',
                                     alignItems: 'center',
-                                    justifyContent: 'space-around'
+                                    justifyContent: 'space-around',
+                                    marginBottom: 10,
                                 }}>
                                     <Text>{this.state.price}€ per person</Text>
                                 </View>
                                 <TouchableNativeFeedback
-                                    onPress={() => {this.props.navigation.navigate('Booking', {activityId: this.state.activity_id})}
+                                    onPress={() => {
+                                        if(userStore.token != null)
+                                            this.props.navigation.navigate('Booking', {activityId: this.state.activity_id});
+                                        else
+                                            this.props.navigation.navigate('Account');
+                                    }
                                     }>
                                     <View style={{
                                         flex: 1,
@@ -157,10 +164,15 @@ export default class ActivityScreen extends React.Component {
                                         justifyContent: 'space-around'
                                     }}>
                                         <Button mode="contained" style={{padding: 5}}>
-                                            BOOK
+                                            {(userStore.token != null) ? 'BOOK' : 'LOGIN'}
                                         </Button>
                                     </View>
                                 </TouchableNativeFeedback>
+                                <HelperText
+                                    type='error'
+                                    visible={(userStore.token == null)}>
+                                    Login to book this tour.
+                                </HelperText>
                             </View>
                             <View style={styles.info}>
                                 <View style={styles.quickInfoLine}>
