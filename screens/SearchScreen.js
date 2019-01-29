@@ -285,7 +285,7 @@ export default class SearchScreen extends React.Component {
                                                       activityScore={item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score).toFixed(1)}
                                                       activityScoreCount={item.n_activity_score}
                                                       price={item.price}
-                                                      guideName={item.Guide.User.name}
+                                                      guideName={item.Guide.User.name} guidePhoto={item.Guide.User.photo_path}
                                                       guideJoined={item.Guide.User.createdAt}
                                                       navigation={this.props.navigation}/>);
                                     }

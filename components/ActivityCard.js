@@ -30,7 +30,7 @@ export default class ActivityCard extends React.Component {
                         <Card.Actions>
                             <View style={{flex:1, flexDirection:'row', justifyContent: 'space-around', alignItems: 'center'}}>
                                 <View style={{flex:0.5, flexDirection:'row'}}>
-                                    <Image style={{width:32, height:32}} source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBDSnWBOqgvr4hOdTTAhcaNU3KAaWQNn8UHqafmbHY_y39ysZ1'}} />
+                                    <Image style={{width:32, height:32}} source={{uri: 'http://188.166.173.44/' + this.props.guidePhoto}} />
                                 </View>
                                 <View style={{flex:1, flexDirection:'column'}}>
                                     <Text style={{fontWeight: '900'}}>{this.props.guideName}</Text>

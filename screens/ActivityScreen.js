@@ -94,6 +94,7 @@ export default class ActivityScreen extends React.Component {
                     region:{latitude:resp.data.lat, longitude:resp.data.lng, latitudeDelta: 0.0122, longitudeDelta: 0.0021},
                     durationMin: resp.data.duration,
                     guideName: resp.data.Guide.User.name,
+                    guidePhoto: resp.data.Guide.User.photo_path,
                     min: resp.data.min_people,
                     max: resp.data.n_people,
                     price: resp.data.price,
@@ -248,7 +249,7 @@ export default class ActivityScreen extends React.Component {
                                         alignItems: 'center'
                                     }}>
                                         <Image style={{width: 54, height: 54}}
-                                               source={{uri: 'https://media.istockphoto.com/photos/confident-businessman-posing-in-the-office-picture-id891418990?k=6&m=891418990&s=612x612&w=0&h=BItvQKG0Wf4Ht3XHPxa2LV0WkCtNjhBjkQv28Dhq2pA='}}/>
+                                               source={{uri: 'http://188.166.173.44/' + this.state.guidePhoto}}/>
                                     </View>
                                     <View style={{
                                         flex: 1,

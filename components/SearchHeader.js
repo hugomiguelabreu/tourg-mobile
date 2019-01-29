@@ -40,23 +40,24 @@ export default class SearchHeader extends React.Component {
                 me.setState({query: resp.data.results[0].address_components[1].long_name, city: resp.data.results[0].address_components[1].long_name,
                                 country: resp.data.results[0].address_components[3].long_name});
                 this.querySearch(me.state.query);
-                this.props.toggleLoad();
+                //this.props.toggleLoad();
             })
             .catch((err) => {
                 console.log(err);
-                this.props.toggleLoad();
+                //this.props.toggleLoad();
                 Alert.alert('Error while getting location', 'An error occurred getting the location')
             });
     }
 
     //Function to get user location using gps
     _getLocation = () => {
-        this.props.toggleLoad();
+        //this.props.toggleLoad();
         navigator.geolocation.getCurrentPosition(position => {
                 this.setState({lat: position.coords.latitude, lng: position.coords.longitude})
                 this._getCity();
             },
-            error => {this.props.toggleLoad();Alert.alert('Error while getting location', error.message);},
+            error => {//this.props.toggleLoad();
+            Alert.alert('Error while getting location', error.message);},
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
     };
 

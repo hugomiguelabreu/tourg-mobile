@@ -160,7 +160,8 @@ export default class BookedCard extends React.Component {
                     onPress={() => {
                         if(this.props.activity_review == null && this.props.guide_review == null && this.state.finished == true)
                             this.props.navigation.navigate('Rating', {activityId: this.props.activityId, guideId: this.props.guideId, activityTitle: this.props.title,
-                                                                        activityRating:this.props.activityScore, bookingId: this.props.id})
+                                                                        activityRating:this.props.activityScore, bookingId: this.props.id, guidePhoto: this.props.guidePhoto,
+                                                                        guideJoined: this.joined.format("MMM YYYY")})
                     }}>
                     <Card style={{flex:1}}>
                         <Card.Cover style={{height:120}} source={{ uri: 'https://picsum.photos/500/?random' }} />
@@ -178,7 +179,7 @@ export default class BookedCard extends React.Component {
                             <View style={{flex:1, flexDirection:'column', justifyContent: 'space-around', alignItems: 'center'}}>
                                 <View style={{flex:1, flexDirection:'row', justifyContent: 'space-around', alignItems: 'center'}}>
                                     <View style={{flex:0.5, flexDirection:'row'}}>
-                                        <Image style={{width:32, height:32}} source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBDSnWBOqgvr4hOdTTAhcaNU3KAaWQNn8UHqafmbHY_y39ysZ1'}} />
+                                        <Image style={{width:32, height:32}} source={{uri: 'http://188.166.173.44/' + this.props.guidePhoto}} />
                                     </View>
                                     <View style={{flex:1, flexDirection:'column'}}>
                                         <Text style={{fontWeight: '900'}}>{this.props.guideName}</Text>

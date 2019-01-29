@@ -65,6 +65,7 @@ export default class MyBookings extends React.Component {
                                   guideName={item.Activity.Guide.User.name} guideJoined={item.Activity.Guide.User.createdAt} navigation={this.props.navigation}
                                   bookingDate={item.Activity_Date.timestamp} accepted={item.accepted}
                                   activity_review={item.guide_evaluation_id} guide_review={item.activity_evaluation_id}
+                                  guidePhoto={item.Activity.Guide.User.photo_path}
                                   finished={item.finished}
                                   rating = {true} />
                 }

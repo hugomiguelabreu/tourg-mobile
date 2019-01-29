@@ -39,6 +39,8 @@ export default class RatingScreen extends React.Component {
             ratingTotal: this.props.navigation.state.params.activityRating,
             guideId: this.props.navigation.state.params.guideId,
             bookingId: this.props.navigation.state.params.bookingId,
+            guidePhoto: this.props.navigation.state.params.guidePhoto,
+            guideJoined: this.props.navigation.state.params.guideJoined,
             errorMessage: '',
             successMessage: '',
             done: false,
@@ -134,11 +136,11 @@ export default class RatingScreen extends React.Component {
                                 <Subheading>Rate your guide</Subheading>
                                 <View style={{flex:0.5, flexDirection: 'row'}}>
                                     <View style={{flex:0.3, flexDirection:'column', justifyContent: 'center', alignItems:'center'}}>
-                                        <Image style={{width:54, height:54}} source={{uri: 'https://media.istockphoto.com/photos/confident-businessman-posing-in-the-office-picture-id891418990?k=6&m=891418990&s=612x612&w=0&h=BItvQKG0Wf4Ht3XHPxa2LV0WkCtNjhBjkQv28Dhq2pA='}} />
+                                        <Image style={{width:54, height:54}} source={{uri: 'http://188.166.173.44/' + this.state.guidePhoto}} />
                                     </View>
                                     <View style={{flex:1, flexDirection:'column', justifyContent: 'center', margin:35}}>
                                         <View style={{flex:1, flexDirection:'column', justifyContent: 'center', alignItems:'flex-start'}}>
-                                            <Text style={{fontSize: 11, color:'grey'}}>Joined August, 2018</Text>
+                                            <Text style={{fontSize: 11, color:'grey'}}>Joined {this.state.guideJoined}</Text>
                                         </View>
                                         <View style={{flex:1, flexDirection:'column', justifyContent: 'center', alignItems:'flex-start'}}>
                                             <AirbnbRating
