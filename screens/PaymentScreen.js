@@ -10,7 +10,18 @@ import {
     ActivityIndicator, Modal, FlatList, TouchableNativeFeedback
 } from 'react-native';
 import {MonoText} from "../components/StyledText";
-import {Button, Title, List, Divider, Card, HelperText, Checkbox, Subheading, Paragraph} from "react-native-paper";
+import {
+    Button,
+    Title,
+    List,
+    Divider,
+    Card,
+    HelperText,
+    Checkbox,
+    Subheading,
+    Paragraph,
+    Snackbar, Portal
+} from "react-native-paper";
 import {CalendarList} from 'react-native-calendars';
 import CalendarPicker from "react-native-calendar-picker";
 import BookOption from "../components/BookOption";
@@ -52,6 +63,10 @@ export default class PaymentScreen extends React.Component {
             totalPeople:0,
             cards: [],
             saveCard: false,
+            errorMessage: '',
+            successMessage: '',
+            processing: false,
+            paid: false,
         }
     }
 
@@ -100,6 +115,43 @@ export default class PaymentScreen extends React.Component {
             });
     }
 
+    book(){
+        let me = this;
+        this.setState({processing: true});
+
+        let data = {};
+        if(this.state.token == null)
+            this.setState({errorMessage:'No card selected', processing:false});
+
+        if(this.state.token.created != null && !this.state.saveCard) {
+            data = {
+                activity_id: this.state.activityId, activity_date_id: this.state.activityDateId,
+                n_booking: this.state.totalPeople, token: this.state.token.tokenId, save: this.state.saveCard.toString()
+            };
+        }else if(this.state.token.created != null && this.state.saveCard){
+            data = {
+                activity_id: this.state.activityId, activity_date_id: this.state.activityDateId,
+                n_booking: this.state.totalPeople, token: this.state.token.tokenId, save: this.state.saveCard.toString(),
+                last_four:this.state.token.card.last4, type: this.state.token.card.brand
+            };
+        }else{
+            data = {
+                activity_id: this.state.activityId, activity_date_id: this.state.activityDateId,
+                n_booking: this.state.totalPeople, customer_id: this.state.token.tokenId
+            };
+        }
+        console.log(data);
+        axios.post('/user/book_activity',
+            data)
+            .then((resp) => {
+                this.setState({paid: true,processing:false, successMessage:'Reservations completed successfully. Visit your account for more info.'});
+            })
+            .catch((err) => {
+                this.setState({processing:false, errorMessage:'There was an error processing the transaction.'});
+                console.log(err.response);
+            });
+    }
+
     removeCard(){
         Alert.alert(
             'Remove card',
@@ -126,6 +178,7 @@ export default class PaymentScreen extends React.Component {
     _cards = (state) => {
         if(this.state.cards.length <= 0){
             return(<List.Item
+                style={{paddingLeft:15, marginTop: -20, marginBottom:10}}
                 title=""
                 description="No cards saved to your account"
                 onPress = {() => {console.log('ola')}}
@@ -145,7 +198,7 @@ export default class PaymentScreen extends React.Component {
                             left={() =>  <List.Icon icon={ () => <Icon.FontAwesome name={'cc-' + item.type.toLowerCase()} size={24} /> } />}
                             onPress = {() => {this.setState({
                                 token:{
-                                    tokenId: item.token,
+                                    tokenId: item.customer_id,
                                     created: null,
                                     card:{
                                         last4:item.last_four,
@@ -216,11 +269,37 @@ export default class PaymentScreen extends React.Component {
         this.setState({totalPeople: value});
     };
 
+    _processing() {
+        if(this.state.processing)
+            return(
+                <LoadingModal/>
+            );
+    }
+
+    _done(){
+        if(this.state.paid)
+            return(
+                <View
+                    style={{
+                        width: (Dimensions.get('window').width),
+                        height: (Dimensions.get('window').height),
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        backgroundColor:'rgba(128, 128, 128, 0.6)',
+                        zIndex:1000
+                    }}/>
+            );
+    }
+
     render() {
         if(!this.state.isLoading) {
             return (
                 <View style={styles.container}>
                     <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1}} ref='scroll'>
+                        {this._done()}
                         <View style={styles.container}>
                             <View style={{flexDirection: 'column', paddingBottom: 20}}>
                                 <Card style={{flexDirection: 'column'}}>
@@ -257,7 +336,7 @@ export default class PaymentScreen extends React.Component {
                                         right: 0,
                                         bottom: 0
                                     }}>
-                                        <Title style={styles.title}>Visita à Sé de Braga</Title>
+                                        <Title style={styles.title}>{this.state.title}</Title>
                                         <Title style={styles.rating}>
                                             {this.state.total_activity_score == null ? 0 : (this.state.total_activity_score / this.state.n_activity_score).toFixed(1)}
                                             &nbsp;
@@ -324,31 +403,72 @@ export default class PaymentScreen extends React.Component {
                             flex: 0.2,
                             flexDirection: 'column',
                             alignItems: 'center',
-                            justifyContent: 'space-around',
+                            justifyContent: 'flex-start',
                             paddingBottom: 0,
                         }}>
-                            <View>
-                                <TouchableNativeFeedback
-                                    onPress={() => {}
-                                    }>
-                                    <Button mode="contained" style={{padding: 5}} disabled={this.state.token == null}>
-                                        {'Pay ' + this.state.totalPeople * this.state.price + '€ with'} &nbsp;
-                                        <Icon.FontAwesome
-                                            name={this.state.token != null ? 'cc-' + this.state.token.card.brand.toLowerCase() : 'credit-card'}
-                                            size={16}
-                                        />
-                                    </Button>
-                                </TouchableNativeFeedback>
-                                <HelperText
-                                    type="info"
-                                    visible={true}
-                                    style={{textAlign: 'center'}}>
+                            <TouchableNativeFeedback
+                                onPress={() => {this.book()}
+                                }>
+                                <Button mode="contained" style={{padding: 5, marginTop:10}} disabled={this.state.token == null || this.state.paid}>
+                                    {'Pay ' + this.state.totalPeople * this.state.price + '€ with'} &nbsp;
                                     <Icon.FontAwesome
-                                        name={'lock'}
-                                    /> &nbsp; Secure checkout
-                                </HelperText>
-                            </View>
+                                        name={this.state.token != null ? 'cc-' + this.state.token.card.brand.toLowerCase() : 'credit-card'}
+                                        size={16}
+                                    />
+                                </Button>
+                            </TouchableNativeFeedback>
+                            <HelperText
+                                type="info"
+                                visible={true}
+                                style={{textAlign: 'center'}}>
+                                <Icon.FontAwesome
+                                    name={'lock'}
+                                /> &nbsp; Secure checkout
+                            </HelperText>
                         </View>
+                    <Snackbar
+                        visible={this.state.errorMessage != ''}
+                        style={{backgroundColor: 'white'}}
+                        onDismiss={() => {
+                            this.setState({ errorMessage: '' });
+                        }}
+                        action={{
+                            label: 'Dismiss',
+                            onPress: () => {
+                                this.setState({errorMessage:''});
+                            },
+                        }}>
+                        <Icon.Ionicons
+                            name='md-close'
+                            style={{color:'red'}}
+                            size={16}
+                        />
+                        &nbsp;
+                        &nbsp;
+                        <Text style={{color:'black'}}>{this.state.errorMessage}</Text>
+                    </Snackbar>
+                    <Snackbar
+                        visible={this.state.successMessage != ''}
+                        style={{backgroundColor: 'white'}}
+                        onDismiss={() => {
+                            this.setState({ successMessage: '' });
+                        }}
+                        action={{
+                            label: 'Dismiss',
+                            onPress: () => {
+                                this.setState({ successMessage: '' });
+                            },
+                        }}>
+                        <Icon.Ionicons
+                            name='md-checkmark'
+                            style={{color:'green'}}
+                            size={16}
+                        />
+                        &nbsp;
+                        &nbsp;
+                        <Text style={{color:'black'}}>{this.state.successMessage}</Text>
+                    </Snackbar>
+                    {this._processing()}
                 </View>
             );
         }else{
