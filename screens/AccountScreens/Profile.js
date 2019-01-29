@@ -41,23 +41,28 @@ import { ImagePicker } from 'expo';
             mediaTypes: "Images",
             aspect: [3, 4],
         });
-        console.log(pickerResult);
-        if(pickerResult.cancelled == false){
+
+        if(pickerResult.cancelled === false){
+            console.log(pickerResult);
+            let ext = pickerResult.uri.split('.');
+            ext = ext[ext.length-1];
             const formData = new FormData();
-            formData.append("photo", {
-                name: "picture",
-                type: pickerResult.type,
+            formData.append("image", {
+                name: "picture." + ext,
+                type: pickerResult.type + '/' + ext,
                 uri:
-                    Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
+                    Platform.OS === "android" ? pickerResult.uri : pickerResult.uri.replace("file://", "")
             });
+
             const config = {
                 headers: {
-                    'content-type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
                 }
             };
-            axios.post("/user/upload", formData, config)
+            axios.post("/user/upload_image", formData, config)
                 .then((resp) => {
-                    userStore.updatePhoto(pickerResult.uri);
+                    console.log(resp);
+                    userStore.updatePhoto(resp.data);
                 })
                 .catch((err) => {
                     console.log(err);

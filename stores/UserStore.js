@@ -25,7 +25,7 @@ class User {
         this.phone = data.user.phone;
         this.bio = data.user.bio;
         this.createdAt = data.user.createdAt;
-        this.photo_path = data.user.photo_path;
+        this.photo_path = 'http://188.166.173.44/' + data.user.photo_path;
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + userStore.token;
         registerForPushNotificationsAsync();
     }
@@ -37,7 +37,7 @@ class User {
     }
 
     @action updatePhoto(uri){
-        this.photo_path = uri;
+        this.photo_path = 'http://188.166.173.44/' + uri;
     }
 
     @action logout(){
