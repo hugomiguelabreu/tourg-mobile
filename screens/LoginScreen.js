@@ -19,8 +19,8 @@ import userStore from '../stores/UserStore';
 export default class LoginScreen extends React.Component {
 
     state = {
-        loginEmail: 'user@gmail.com',
-        loginPassword: 'password',
+        loginEmail: '',
+        loginPassword: '',
         loginErrorMessage:'',
         registerName: '',
         registerEmail: '',
