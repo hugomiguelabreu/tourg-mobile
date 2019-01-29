@@ -70,15 +70,19 @@ export default class SearchScreen extends React.Component {
     ];
 
     static navigationOptions = ({navigation}) => ({
-        headerTitle: <SearchHeader onClick={navigation.getParam('getLocation')} handleQuery={navigation.getParam('query')}/>,
+        headerTitle: <SearchHeader toggleLoad={navigation.getParam('loading')} handleQuery={navigation.getParam('query')}/>,
         headerStyle: {
             height:96,
         },
     });
 
+    _isLoading = () => {
+        this.setState({isLoading: !this.state.isLoading})
+    };
+
     componentDidMount() {
         // Set navigation param to execute function on header button
-        this.props.navigation.setParams({ query: this.handleChangeQuery });
+        this.props.navigation.setParams({ query: this.handleChangeQuery, loading: this._isLoading });
         // When the screen is focused again let's fetch new results
         this.props.navigation.addListener(
             'willFocus',
@@ -179,7 +183,7 @@ export default class SearchScreen extends React.Component {
     };
 
     _help() {
-        if(this.state.activities == null || this.state.activities.length <= 0){
+        if((this.state.activities == null || this.state.activities.length <= 0) && this.state.query === ''){
             return(
                 <View>
                     <View style={{flexDirection: 'column', justifyContent:'space-between',
@@ -205,6 +209,21 @@ export default class SearchScreen extends React.Component {
                             />
                             <Subheading style={{color:'grey'}}>Get a precise location</Subheading>
                         </View>
+                    </View>
+                </View>
+            );
+        }
+        if((this.state.activities == null || this.state.activities.length <= 0) && this.state.query !== ''){
+            return(
+                <View>
+                    <View style={{flex:1, flexDirection: 'column', justifyContent:'space-between',
+                        alignItems:'center'}}>
+                        <Title style={{color:'grey'}}>No results</Title>
+                        <Icon.Ionicons
+                            name='md-sad'
+                            size={24}
+                            color='grey'
+                        />
                     </View>
                 </View>
             );
