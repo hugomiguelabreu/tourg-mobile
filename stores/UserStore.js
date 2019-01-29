@@ -98,12 +98,11 @@ async function registerForPushNotificationsAsync() {
     console.log(token);
     // POST the token to your backend server from where you can retrieve it to send push notifications.
     return axios.post('/user/update_token',
-        {token: token})
+        {notification_token: token})
         .then((resp) => {
             return resp.data;
         })
         .catch((err) => {
-            this.setState({errorMessage:'There was an error processing the token.'});
             console.log(err);
         });
 }

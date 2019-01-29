@@ -35,6 +35,7 @@ export default class SearchScreen extends React.Component {
             lng: null,
             query: '',
             showCategories: false,
+            processing: false,
             selectedCategories: {
                 'Food and Drink': false,
                 'Concerts': false,
@@ -77,7 +78,7 @@ export default class SearchScreen extends React.Component {
     });
 
     _isLoading = () => {
-        this.setState({isLoading: !this.state.isLoading})
+        this.setState({processing: !this.state.processing})
     };
 
     componentDidMount() {
@@ -137,6 +138,7 @@ export default class SearchScreen extends React.Component {
                 })
                 .catch((err) => {
                     console.log(err);
+                    me.setState({activities: []});
                 });
         }else{
             axios.get('/activities/search/' + this.state.query + '/' +
@@ -148,6 +150,7 @@ export default class SearchScreen extends React.Component {
                 })
                 .catch((err) => {
                     console.log(err);
+                    me.setState({activities: []});
                 });
         }
     }
@@ -213,7 +216,7 @@ export default class SearchScreen extends React.Component {
                 </View>
             );
         }
-        if((this.state.activities == null || this.state.activities.length <= 0) && this.state.query !== ''){
+        if((this.state.activities != null && this.state.activities.length <= 0) && this.state.query !== ''){
             return(
                 <View>
                     <View style={{flex:1, flexDirection: 'column', justifyContent:'space-between',
@@ -228,6 +231,13 @@ export default class SearchScreen extends React.Component {
                 </View>
             );
         }
+    }
+
+    _processing() {
+        if(this.state.processing)
+            return(
+                <LoadingModal/>
+            );
     }
 
     render() {
@@ -295,6 +305,7 @@ export default class SearchScreen extends React.Component {
                             onConfirm={this._handleDatePickedEnd}
                             onCancel={this._hideDateTimePickerEnd}
                         />
+                        {this._processing()}
                     </ScrollView>
                 </View>
             );
