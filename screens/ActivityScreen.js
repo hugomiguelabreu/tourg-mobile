@@ -34,6 +34,7 @@ export default class ActivityScreen extends React.Component {
             guideTotalScore: null,
             guideNScore: 0,
             guideJoined: null,
+            activityPhoto: null,
             highlights: [],
             lang: [],
         };
@@ -90,6 +91,7 @@ export default class ActivityScreen extends React.Component {
                     city: resp.data.city,
                     description: resp.data.description,
                     total_activity_score: resp.data.total_activity_score,
+                    activityPhoto: resp.data.photo_path,
                     n_activity_score: resp.data.n_activity_score,
                     region:{latitude:resp.data.lat, longitude:resp.data.lng, latitudeDelta: 0.0122, longitudeDelta: 0.0021},
                     durationMin: resp.data.duration,
@@ -118,7 +120,7 @@ export default class ActivityScreen extends React.Component {
                 <View style={styles.container}>
                     <ScrollView style={styles.container}>
                         <Card style={{flex: 4, flexDirection: 'column'}}>
-                            <Card.Cover source={{uri: 'https://picsum.photos/900'}}/>
+                            <Card.Cover source={{uri: 'http://188.166.173.44/' + this.state.activityPhoto}}/>
                             <Card.Content style={{
                                 width: (Dimensions.get('window').width / 1.65),
                                 justifyContent: 'space-between',

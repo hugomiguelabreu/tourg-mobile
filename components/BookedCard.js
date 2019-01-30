@@ -161,10 +161,10 @@ export default class BookedCard extends React.Component {
                         if(this.props.activity_review == null && this.props.guide_review == null && this.state.finished == true)
                             this.props.navigation.navigate('Rating', {activityId: this.props.activityId, guideId: this.props.guideId, activityTitle: this.props.title,
                                                                         activityRating:this.props.activityScore, bookingId: this.props.id, guidePhoto: this.props.guidePhoto,
-                                                                        guideJoined: this.joined.format("MMM YYYY")})
+                                                                        guideJoined: this.joined.format("MMM YYYY"), activityPhoto: this.props.activityImage})
                     }}>
                     <Card style={{flex:1}}>
-                        <Card.Cover style={{height:120}} source={{ uri: 'https://picsum.photos/500/?random' }} />
+                        <Card.Cover style={{height:120}} source={{ uri: 'http://188.166.173.44/' + this.props.activityImage }} />
                         <Card.Content style={{flex:1, paddingTop: 5}}>
                             <View style={{flex:1, flexDirection:'row'}}>
                                 <View style={{flex:3, flexDirection:'column'}}>

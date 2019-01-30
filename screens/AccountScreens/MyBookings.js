@@ -64,6 +64,7 @@ export default class MyBookings extends React.Component {
                                   guideId={item.Activity.Guide.id} activityScore={item.Activity.total_activity_score == null ? 0 : (item.Activity.total_activity_score / item.Activity.n_activity_score).toFixed(1)}
                                   guideName={item.Activity.Guide.User.name} guideJoined={item.Activity.Guide.User.createdAt} navigation={this.props.navigation}
                                   bookingDate={item.Activity_Date.timestamp} accepted={item.accepted}
+                                  activityImage={item.Activity.photo_path}
                                   activity_review={item.guide_evaluation_id} guide_review={item.activity_evaluation_id}
                                   guidePhoto={item.Activity.Guide.User.photo_path}
                                   finished={item.finished}

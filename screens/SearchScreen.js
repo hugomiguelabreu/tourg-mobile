@@ -284,6 +284,7 @@ export default class SearchScreen extends React.Component {
                                         return(<ActivityCard id={item.id} title={item.title} description={item.description}
                                                       activityScore={item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score).toFixed(1)}
                                                       activityScoreCount={item.n_activity_score}
+                                                      activityImage={item.photo_path}
                                                       price={item.price}
                                                       guideName={item.Guide.User.name} guidePhoto={item.Guide.User.photo_path}
                                                       guideJoined={item.Guide.User.createdAt}

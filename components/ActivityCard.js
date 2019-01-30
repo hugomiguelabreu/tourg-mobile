@@ -21,7 +21,7 @@ export default class ActivityCard extends React.Component {
                 <TouchableNativeFeedback
                     onPress={() => {this.props.navigation.navigate('Activity', {activityId: this.props.id})}}>
                     <Card style={{flex:1}}>
-                        <Card.Cover style={{height:120}} source={{ uri: 'https://picsum.photos/500/?random' }} />
+                        <Card.Cover style={{height:120}} source={{ uri: 'http://188.166.173.44/' + this.props.activityImage }} />
                         <Card.Content style={{flex:1, paddingTop: 5}}>
                             <Title>{this.props.title}</Title>
                             <Paragraph numberOfLines={2}>{this.props.description}</Paragraph>

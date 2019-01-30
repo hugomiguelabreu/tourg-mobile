@@ -48,6 +48,7 @@ export default class PaymentScreen extends React.Component {
             city: '',
             description: '',
             image: '',
+            activityPhoto: null,
             total_activity_score: null,
             n_activity_score: 0,
             region:null,
@@ -101,6 +102,7 @@ export default class PaymentScreen extends React.Component {
                     guideName: resp.data.Guide.User.name,
                     min: resp.data.min_people,
                     max: resp.data.n_people,
+                    activityPhoto: resp.data.photo_path,
                     totalPeople: resp.data.min_people,
                     price: resp.data.price,
                     guideBio: resp.data.Guide.User.bio,
@@ -303,7 +305,7 @@ export default class PaymentScreen extends React.Component {
                         <View style={styles.container}>
                             <View style={{flexDirection: 'column', paddingBottom: 20}}>
                                 <Card style={{flexDirection: 'column'}}>
-                                    <Card.Cover style={{height:(Dimensions.get('window').height / 6)}} source={{uri: 'https://picsum.photos/900'}}/>
+                                    <Card.Cover style={{height:(Dimensions.get('window').height / 6)}} source={{uri: 'http://188.166.173.44/' + this.state.activityPhoto}}/>
                                     <Card.Content style={{
                                         width: (Dimensions.get('window').width / 1.75),
                                         justifyContent: 'space-between',
