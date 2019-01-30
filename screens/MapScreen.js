@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {TextInput, Button, Title, HelperText, Divider, Checkbox, Subheading} from 'react-native-paper';
 import axios from 'axios';
-import {Icon} from 'expo';
+import {Icon, Permissions} from 'expo';
 import {Header} from 'react-navigation';
 import userStore from '../stores/UserStore';
 import MapView, {AnimatedRegion, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -83,8 +83,13 @@ export default class MapScreen extends React.Component {
     }
 
     //Function to get user location using gps
-    _getLocation = () => {
+    async _getLocation() {
         let me = this;
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            Alert.alert('Location permission was denied');
+            return;
+        }
         navigator.geolocation.getCurrentPosition(position => {
                 const location = JSON.stringify(position);
                 me.setState({ region: {latitude: position.coords.latitude, longitude: position.coords.longitude,

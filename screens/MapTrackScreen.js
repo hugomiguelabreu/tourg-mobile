@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {TextInput, Button, Title, HelperText, Divider, Card, Subheading} from 'react-native-paper';
 import axios from 'axios';
-import {Icon, Constants} from 'expo';
+import {Icon, Permissions} from 'expo';
 import {Header} from 'react-navigation';
 import MapView, {AnimatedRegion, PROVIDER_GOOGLE} from 'react-native-maps';
 import {MapViewAnimated, Marker} from 'react-native-maps';
@@ -75,6 +75,7 @@ export default class MapScreen extends React.Component {
                     guideName: resp.data.Activity.Guide.User.name,
                     guideJoined: resp.data.Activity.Guide.User.createdAt,
                     guidePhoto: resp.data.Activity.Guide.User.photo_path,
+                    isLoading:false,
                 });
             })
             .catch((err) => {
@@ -102,8 +103,13 @@ export default class MapScreen extends React.Component {
     }
 
     //Function to get user location using gps
-    _getLocation = () => {
+    async _getLocation() {
         let me = this;
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            Alert.alert('Location permission was denied');
+            return;
+        }
         this.setState({isLoading: true});
         this.watchID = this.geoLoc.watchPosition(position => {
                 const location = JSON.stringify(position);

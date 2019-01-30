@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import {Title, Searchbar} from "react-native-paper";
 import Colors from "../constants/Colors";
-import {Icon} from "expo";
+import {Icon, Permissions} from "expo";
 import axios from "axios";
 
 export default class SearchHeader extends React.Component {
@@ -50,8 +50,13 @@ export default class SearchHeader extends React.Component {
     }
 
     //Function to get user location using gps
-    _getLocation = () => {
+    async _getLocation() {
         //this.props.toggleLoad();
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            Alert.alert('Location permission was denied');
+            return;
+        }
         navigator.geolocation.getCurrentPosition(position => {
                 this.setState({lat: position.coords.latitude, lng: position.coords.longitude})
                 this._getCity();
