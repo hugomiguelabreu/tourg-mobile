@@ -27,7 +27,9 @@ export default class HomeScreen extends React.Component {
   }
 
   static navigationOptions = {
-      headerTitle: <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>EXPLORE</Title></View>
+      headerTitle: <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>EXPLORE
+      &nbsp;<Icon.Ionicons name='md-globe' size={22} style={{marginLeft: 5}}/>
+      </Title></View>
   };
 
   componentDidMount() {
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#F1F0F4',
   },
   contentContainer: {
-    paddingTop: 30,
+    paddingTop: 0,
   },
   welcomeContainer: {
     marginLeft: -15,

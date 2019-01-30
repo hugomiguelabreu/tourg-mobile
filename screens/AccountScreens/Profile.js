@@ -17,6 +17,7 @@ import axios from "axios";
 import {Icon} from "expo";
 import Colors from "../../constants/Colors";
 import { ImagePicker } from 'expo';
+import LoadingModal from "../../components/LoadingModal";
 
 @observer export default class Profile extends React.Component {
 
@@ -29,6 +30,7 @@ import { ImagePicker } from 'expo';
             name: userStore.name,
             bio: userStore.bio,
             photo: userStore.photo_path,
+            uploading:false,
             errorMessage: '',
             successMessage: '',
         };
@@ -59,11 +61,15 @@ import { ImagePicker } from 'expo';
                     'Content-Type': 'multipart/form-data',
                 }
             };
+            this.setState({uploading:true});
             axios.post("/user/upload_image", formData, config)
                 .then((resp) => {
                     userStore.updatePhoto(resp.data);
+                    this.setState({uploading:false});
                 })
                 .catch((err) => {
+                    this.setState({uploading:false});
+                    this.setState({errorMessage:'Something went wrong uploading the photo'});
                     console.log(err);
                 });
         }
@@ -89,7 +95,6 @@ import { ImagePicker } from 'expo';
         else
             data = {email: state.email, name: state.name, phone: state.phone, bio: state.bio}
 
-
         axios.post('/user/update',
             data)
             .then((resp) => {
@@ -101,6 +106,13 @@ import { ImagePicker } from 'expo';
                 me.setState({ errorMessage: 'Something went wrong updating the profile' });
                 console.log(err);
             });
+    }
+
+    _load(){
+        if(this.state.uploading)
+            return(
+            <LoadingModal/>
+            );
     }
 
     render() {
@@ -170,6 +182,7 @@ import { ImagePicker } from 'expo';
                             </View>
                         </View>
                     </View>
+                    {this._load()}
                 </ScrollView>
                 </KeyboardAvoidingView>
                 <Snackbar
