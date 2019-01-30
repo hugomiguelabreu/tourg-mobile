@@ -51,6 +51,7 @@ export default class SearchHeader extends React.Component {
 
     //Function to get user location using gps
     async _getLocation() {
+        let me = this;
         //this.props.toggleLoad();
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
@@ -58,8 +59,8 @@ export default class SearchHeader extends React.Component {
             return;
         }
         navigator.geolocation.getCurrentPosition(position => {
-                this.setState({lat: position.coords.latitude, lng: position.coords.longitude})
-                this._getCity();
+                me.setState({lat: position.coords.latitude, lng: position.coords.longitude})
+                me._getCity();
             },
             error => {//this.props.toggleLoad();
             Alert.alert('Error while getting location', error.message);},

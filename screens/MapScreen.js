@@ -95,7 +95,7 @@ export default class MapScreen extends React.Component {
                 me.setState({ region: {latitude: position.coords.latitude, longitude: position.coords.longitude,
                         latitudeDelta: 0.0122,
                         longitudeDelta: 0.0021}, isLoading: false});
-                this._getCity();
+                me._getCity();
             },
             error => Alert.alert('Error while getting location', error.message),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
