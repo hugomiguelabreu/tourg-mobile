@@ -12,6 +12,8 @@ export default class SearchHeader extends React.Component {
         this.state = {
             query: '',
             city: null,
+            lat: null,
+            lng: null,
             country: null,
             typing: false,
             typingTimeout: 0
@@ -58,11 +60,13 @@ export default class SearchHeader extends React.Component {
             Alert.alert('Location permission was denied');
             return;
         }
+        this.props.toggleLoad();
         navigator.geolocation.getCurrentPosition(position => {
-                me.setState({lat: position.coords.latitude, lng: position.coords.longitude})
+                me.setState({lat: position.coords.latitude, lng: position.coords.longitude});
                 me._getCity();
+                me.props.toggleLoad();
             },
-            error => {//this.props.toggleLoad();
+            error => {me.props.toggleLoad();
             Alert.alert('Error while getting location', error.message);},
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
     };
@@ -87,7 +91,7 @@ export default class SearchHeader extends React.Component {
                             <Title>|</Title>
                         </View>
                         <TouchableOpacity style={{flex:2, flexDirection:'row', justifyContent:'space-around', alignItems:'stretch'}}
-                            onPress={this._getLocation}>
+                            onPress={() => {this._getLocation()}}>
                             <View style={{flex:2, flexDirection:'column', justifyContent: 'center'}}>
                                 <Text>{this.state.city==null ? 'GPS' : this.state.city}</Text>
                                 <Text>{this.state.country==null ? 'Location' : this.state.country}</Text>
