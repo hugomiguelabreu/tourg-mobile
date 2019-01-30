@@ -1,181 +1,113 @@
 import React from 'react';
 import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    FlatList,
+    Image,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-
+import {Divider, Subheading, Title} from 'react-native-paper';
 import { MonoText } from '../components/StyledText';
+import ActivityCard from "../components/ActivityCard";
+import userStore from '../stores/UserStore';
+import axios from "axios";
+import {Icon} from "expo";
 
 export default class HomeScreen extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      activities: null,
+    };
+  }
+
   static navigationOptions = {
-    header: null,
+      headerTitle: <View style={{flex:1, alignItems:'center', justifyContent:'center'}}><Title>EXPLORE</Title></View>
   };
+
+  componentDidMount() {
+    this._getActivities();
+  }
+
+    _getActivities() {
+        let me = this;
+        this.setState({isLoading: true});
+        axios.get('/activities')
+            .then((resp) => {
+                me.setState({activities: resp.data, isLoading:false});
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
   render() {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
+          <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, paddingTop: 15, alignItems: 'center'}}>
+            <Title>Welcome back, {userStore.token != null ? userStore.name : 'Guest'}&nbsp;</Title>
+            <Icon.Ionicons
+                name='md-happy'
+                size={24}
             />
           </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
-
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
+            <View style={{flex: 1, flexDirection: 'row', paddingLeft: 10, paddingTop: 5, alignItems:'center'}}>
+                <Subheading>Were are some highlights for you &nbsp;</Subheading>
+                <Icon.Ionicons
+                    name='md-heart'
+                    size={16}
+                />
             </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
-            </TouchableOpacity>
+          <View style={styles.list}>
+            <Divider style={{marginBottom: 15, marginTop: 15}}/>
+              <FlatList
+                  data={this.state.activities}
+                  keyExtractor={(item, index) => 'item' + index}
+                  extraData={this.state}
+                  renderItem={({item}) => {
+                          return(<ActivityCard id={item.id} title={item.title} description={item.description}
+                                               activityScore={item.total_activity_score == null ? 0 : (item.total_activity_score / item.n_activity_score).toFixed(1)}
+                                               activityScoreCount={item.n_activity_score}
+                                               activityImage={item.photo_path}
+                                               price={item.price}
+                                               guideName={item.Guide.User.name} guidePhoto={item.Guide.User.photo_path}
+                                               guideJoined={item.Guide.User.createdAt}
+                                               navigation={this.props.navigation}/>);
+                      }
+                  }
+              />
           </View>
         </ScrollView>
       </View>
     );
   }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
+    backgroundColor:'#F1F0F4',
   },
   contentContainer: {
     paddingTop: 30,
   },
   welcomeContainer: {
-    alignItems: 'center',
+    marginLeft: -15,
+      marginRight: -15,
+      alignItems: 'center',
     marginTop: 10,
     marginBottom: 20,
   },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+    list: {
+        paddingLeft: 15,
+        paddingRight: 15,
+        flex:1,
+        flexDirection: 'column',
+    },
 });
