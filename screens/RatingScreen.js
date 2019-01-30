@@ -91,13 +91,15 @@ export default class RatingScreen extends React.Component {
     }
 
     render() {
+        console.log(this.props.navigation.state.params.activityPhoto);
+        console.log(this.state.activityPhoto);
         return (
             <View style={styles.container}>
                 <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset = {Header.HEIGHT - 30} enabled>
                 <ScrollView style={styles.container} contentContainerStyle={{flexGrow: 1}}>
                     <View style={styles.welcomeContainer}>
                         <Card style={{flex:4, flexDirection:'column'}}>
-                            <Card.Cover source={{ uri: 'http://188.166.173.44' + this.state.activityPhoto }} />
+                            <Card.Cover source={{ uri: 'http://188.166.173.44/' + this.state.activityPhoto }} />
                             <Card.Content style={{width:(Dimensions.get('window').width/1.65), justifyContent: 'space-between', alignItems: 'flex-end',
                                 position:'absolute', right: 0, bottom: 0}}>
                                 <Title style={styles.title}>{this.state.title}</Title>
