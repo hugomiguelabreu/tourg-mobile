@@ -39,7 +39,7 @@ export default class SearchHeader extends React.Component {
         axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.lat + ',' + this.state.lng + '&key=AIzaSyAjNTW_zs7bwwUmDnYhaxSpAziK6b4-NVE')
             .then((resp) => {
                 console.log(resp.data);
-                me.setState({query: resp.data.results[0].address_components[1].long_name, city: resp.data.results[0].address_components[1].long_name,
+                me.setState({query: resp.data.results[0].address_components[2].long_name, city: resp.data.results[0].address_components[2].long_name,
                                 country: resp.data.results[0].address_components[3].long_name});
                 this.querySearch(me.state.query);
                 //this.props.toggleLoad();
