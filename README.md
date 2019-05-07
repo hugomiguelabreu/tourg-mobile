@@ -25,16 +25,16 @@ echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo s
 
 # Team
 ## Mobile team
-Adriana Pereira - @AdrianaGrey
+Adriana Pereira - [@AdrianaGrey](https://github.com/AdrianaGrey)
 
-Hugo Abreu - @hugomiguelabreu
+Hugo Abreu - [@hugomiguelabreu](https://github.com/hugomiguelabreu)
 
-João Reis - @jibreis
+João Reis - [@jibreis](https://github.com/jibreis)
 
 ## Cloud team
-Afonso Fontes - @afonsopf
+Afonso Fontes - [@afonsopf](https://github.com/afonsopf)
 
-Bruno Renato - @brfc
+Bruno Renato - [@brfc](https://github.com/brfc)
 
-João Padrão - @jpadrao
+João Padrão - [@jpadrao](https://github.com/jpadrao)
 
