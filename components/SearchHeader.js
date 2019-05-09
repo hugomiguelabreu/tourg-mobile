@@ -36,7 +36,7 @@ export default class SearchHeader extends React.Component {
 
     _getCity(){
         let me = this;
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.lat + ',' + this.state.lng + '&key=AIzaSyAjNTW_zs7bwwUmDnYhaxSpAziK6b4-NVE')
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.lat + ',' + this.state.lng + '&key=#')
             .then((resp) => {
                 console.log(resp.data);
                 me.setState({query: resp.data.results[0].address_components[2].long_name, city: resp.data.results[0].address_components[2].long_name,

@@ -65,7 +65,7 @@ export default class MapScreen extends React.Component {
 
     _getCity(){
         let me = this;
-        axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.region.latitude + ',' + this.state.region.longitude + '&key=AIzaSyAjNTW_zs7bwwUmDnYhaxSpAziK6b4-NVE')
+        axios.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.region.latitude + ',' + this.state.region.longitude + '&key=#')
             .then((resp) => {
                 console.log(resp.data);
                 me.setState({query: resp.data.results[0].address_components[1].long_name, city: resp.data.results[0].address_components[1].long_name,

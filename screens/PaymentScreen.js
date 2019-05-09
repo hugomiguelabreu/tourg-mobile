@@ -85,7 +85,7 @@ export default class PaymentScreen extends React.Component {
 
     _getDetails(){
         Stripe.setOptionsAsync({
-            publishableKey: 'pk_test_Ebu3056HRTsfFnYQ4xrtZDzz',
+            publishableKey: '#',
         });
         let me = this;
         this.setState({isLoading: true});
