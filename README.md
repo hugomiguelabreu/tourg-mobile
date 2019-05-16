@@ -3,6 +3,10 @@
 
 tourg is a mobile application with the pretension of offering a seamless tourist experience to the end-user.
 
+[:iphone: Guide mobile app](https://github.com/hugomiguelabreu/tourg-mobile)
+
+[:cloud: REST API](https://github.com/hugomiguelabreu/tourg-cloud)
+
 # Deploy
 Install all dependencies of the project.
 ```
