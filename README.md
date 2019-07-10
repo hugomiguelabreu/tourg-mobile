@@ -9,12 +9,12 @@ tourg is a mobile application with the pretension of offering a seamless tourist
 
 # Screens
 <div>
-  <img height='525' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-00-21-30-887_com.tourgguide.app.png"/>
-  <img height='525' src="https://storage.googleapis.com/servings/Screenshot_2019-02-03-13-20-04-782_com.tourg.app.png"/>
-  <img height='525' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-01-15-43-763_com.tourg.app.png"/>
-  <img height='525' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-01-05-44-590_com.tourg.app.png"/>
-  <img height='525' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-01-06-13-328_com.tourg.app.png"/>
-  <img height='525' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-01-04-45-581_com.tourg.app.png"/>
+  <img height='500' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-00-21-30-887_com.tourgguide.app.png"/>
+  <img height='500' src="https://storage.googleapis.com/servings/Screenshot_2019-02-03-13-20-04-782_com.tourg.app.png"/>
+  <img height='500' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-01-15-43-763_com.tourg.app.png"/>
+  <img height='500' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-01-05-44-590_com.tourg.app.png"/>
+  <img height='500' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-01-06-13-328_com.tourg.app.png"/>
+  <img height='500' src="https://storage.googleapis.com/servings/Screenshot_2019-01-31-01-04-45-581_com.tourg.app.png"/>
 </div>
 
 # Deploy
